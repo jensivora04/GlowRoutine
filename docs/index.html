@@ -279,16 +279,17 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
       </div>
     </div>
   </div>
-  <div class="card" style="border-left:2px solid rgba(212,168,69,.3)">
+  <div class="card" id="h-routine-card" style="border-left:2px solid rgba(184,148,240,.3)">
     <div class="card-row">
-      <div class="card-title">☀️ Morning Routine</div>
-      <button class="view-all" onclick="go('routine')">View all →</button>
+      <div class="card-title" id="h-routine-title">☀️ Morning Routine</div>
+      <button class="view-all" id="h-routine-btn" onclick="go('routine')">View all →</button>
     </div>
     <div class="prog-bar-wrap"><div class="prog-bar" id="h-prog" style="width:0%"></div></div>
     <div class="prog-label" id="h-prog-lbl">0/7 steps done</div>
     <div class="step-list" id="h-steps"></div>
+    <button class="complete-night-btn" id="h-complete-btn" onclick="completeNight()" style="display:none;margin-top:14px">Complete Night & Move to Night <span id="h-next-night">2</span> →</button>
   </div>
-  <div class="card" style="background:linear-gradient(145deg,rgba(136,96,208,.18),rgba(80,40,160,.1));border:1px solid rgba(136,96,208,.22);border-left:2px solid rgba(170,120,240,.5);padding:18px 20px">
+  <div id="h-tonight-card" class="card" style="background:linear-gradient(145deg,rgba(136,96,208,.18),rgba(80,40,160,.1));border:1px solid rgba(136,96,208,.22);border-left:2px solid rgba(170,120,240,.5);padding:18px 20px">
     <div class="card-label">🌙 TONIGHT</div>
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div id="h-night-info" style="flex:1"></div>
@@ -684,27 +685,51 @@ function rHome(){
   const circ=2*Math.PI*34;const ringFill=Math.min(nightsDone/20,1)*circ;
   document.getElementById('jc-ring').setAttribute('stroke-dasharray',`${ringFill.toFixed(1)} ${circ.toFixed(1)}`);
   document.getElementById('jc-pct').textContent=Math.round(Math.min(nightsDone/20,1)*100)+'%';
-  // Morning steps
-  const ms=D.steps.sort((a,b)=>a.o-b.o);
-  const done=getDone();
-  const mdone=ms.filter(s=>done.includes(s.id)).length;
-  const pct=ms.length?mdone/ms.length*100:0;
-  document.getElementById('h-prog').style.width=pct+'%';
-  document.getElementById('h-prog-lbl').textContent=`${mdone}/${D.steps.length} steps done · ${mdone===D.steps.length?'✓ All done!':'keep going ✨'}`;
-  document.getElementById('h-steps').innerHTML=ms.map(s=>{
-    const d=done.includes(s.id);
-    const type=STEP_TYPE[s.id]||'';
-    const name=STEP_SHORT[s.id]||s.name;
-    return `<div class="step-item" onclick="togHStep('${s.id}')"><div class="step-circle ${d?'done':''}"></div><span class="step-name ${d?'done':''}"><span class="step-type-lbl">${type}</span> — ${name}</span></div>`;
-  }).join('');
-  // Tonight
-  const nr=getNightRoutine(D.nightNum);
-  const nightDoneCount=D.nightDone.length;
-  const totalNightSteps=nr.steps.length;
-  const nightAllDone=nightDoneCount>=totalNightSteps;
-  document.getElementById('h-night-info').innerHTML=`
-    <div style="font-size:17px;font-weight:700">Night ${D.nightNum} ${nr.mask?'🎭 Mask Night':''}</div>
-    <div style="font-size:12px;color:var(--text2);margin-top:2px">${nightAllDone?'✓ Completed tonight!':nightDoneCount+'/'+totalNightSteps+' steps done'}</div>`;
+  // Routine card — morning or night depending on time of day
+  if(tod==='AM'){
+    document.getElementById('h-routine-title').textContent='☀️ Morning Routine';
+    document.getElementById('h-tonight-card').style.display='';
+    document.getElementById('h-complete-btn').style.display='none';
+    const ms=D.steps.sort((a,b)=>a.o-b.o);
+    const done=getDone();
+    const mdone=ms.filter(s=>done.includes(s.id)).length;
+    const pct=ms.length?mdone/ms.length*100:0;
+    document.getElementById('h-prog').style.width=pct+'%';
+    document.getElementById('h-prog-lbl').textContent=`${mdone}/${D.steps.length} steps done · ${mdone===D.steps.length?'✓ All done!':'keep going ✨'}`;
+    document.getElementById('h-steps').innerHTML=ms.map(s=>{
+      const d=done.includes(s.id);
+      const type=STEP_TYPE[s.id]||'';
+      const name=STEP_SHORT[s.id]||s.name;
+      return `<div class="step-item" onclick="togHStep('${s.id}')"><div class="step-circle ${d?'done':''}"></div><span class="step-name ${d?'done':''}"><span class="step-type-lbl">${type}</span> — ${name}</span></div>`;
+    }).join('');
+    // Tonight summary
+    const nr0=getNightRoutine(D.nightNum);
+    const ndc=D.nightDone.length,nts=nr0.steps.length,nad=ndc>=nts;
+    document.getElementById('h-night-info').innerHTML=`<div style="font-size:17px;font-weight:700">Night ${D.nightNum} ${nr0.mask?'🎭 Mask Night':''}</div><div style="font-size:12px;color:var(--text2);margin-top:2px">${nad?'✓ Completed tonight!':ndc+'/'+nts+' steps done'}</div>`;
+  } else {
+    // NIGHT MODE
+    document.getElementById('h-routine-title').innerHTML=`🌙 Night ${D.nightNum} <span style="font-size:12px;font-weight:500;color:var(--text3)">${getNightRoutine(D.nightNum).mask?'· 🎭 Mask Night':''}</span>`;
+    document.getElementById('h-tonight-card').style.display='none';
+    const nr=getNightRoutine(D.nightNum);
+    const nSteps=resolveSteps(nr);
+    const ndone=D.nightDone;
+    const nDoneCount=ndone.length;
+    const nTotal=nSteps.length;
+    const nPct=nTotal?nDoneCount/nTotal*100:0;
+    document.getElementById('h-prog').style.width=nPct+'%';
+    document.getElementById('h-prog-lbl').textContent=`${nDoneCount}/${nTotal} steps done · ${nDoneCount===nTotal?'✓ All done!':'keep going ✨'}`;
+    document.getElementById('h-steps').innerHTML=nSteps.map((s,i)=>{
+      const d=ndone.includes(i);
+      const isMask=s.startsWith('🎭');
+      const type=isMask?'🎭 Mask':nightStepType(s);
+      const label=isMask?s.replace('🎭 ',''):s;
+      return `<div class="step-item" onclick="togHNightStep(${i})" style="${isMask?'background:var(--rose-xl);border-radius:12px;padding:4px 8px;margin:-2px 0':''}"><div class="step-circle ${d?'done':''}"></div><span class="step-name ${d?'done':''}"><span class="step-type-lbl">${type}</span> — ${label}</span></div>`;
+    }).join('');
+    const allNightDone=nDoneCount>=nTotal&&nTotal>0;
+    const btn=document.getElementById('h-complete-btn');
+    btn.style.display=allNightDone?'block':'none';
+    document.getElementById('h-next-night').textContent=D.nightNum+1;
+  }
   // Mask
   const tm=getTM();const ml=D.mlogs.some(l=>l.date===today());
   document.getElementById('h-mask').innerHTML=tm
@@ -728,6 +753,11 @@ function togHStep(id){
   const t=today(),idx=D.logs.findIndex(l=>l.date===t);
   if(idx>=0){const c=D.logs[idx].done;D.logs[idx].done=c.includes(id)?c.filter(x=>x!==id):[...c,id];}
   else D.logs.push({date:t,done:[id]});
+  save();rHome();
+}
+function togHNightStep(i){
+  if(D.nightDone.includes(i))D.nightDone=D.nightDone.filter(x=>x!==i);
+  else D.nightDone=[...D.nightDone,i];
   save();rHome();
 }
 function logMH(n){D.mlogs.push({date:today(),n});const s=D.mstock.find(x=>x.n===n);if(s)s.u++;save();rHome();}
