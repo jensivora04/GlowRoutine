@@ -666,6 +666,7 @@ function render(tab){
 //  HOME
 // ══════════════════════════════════════════
 function rHome(){
+ try{
   const h=new Date().getHours();
   const g=h<12?'Good Morning':h<17?'Good Afternoon':'Good Evening';
   const e=h<12?'🌸':h<17?'☀️':'🌙';
@@ -714,6 +715,9 @@ function rHome(){
     {e:'🧴',v:D.products.length,l:'Products'},{e:'📓',v:(D.journals||[]).length,l:'Journal'},
     {e:'🎭',v:D.mlogs.length,l:'Masks Used'},{e:'🔥',v:sk,l:'Streak'},
   ].map(s=>`<div class="stat-item"><div class="stat-emoji">${s.e}</div><div class="stat-val">${s.v}</div><div class="stat-lbl">${s.l}</div></div>`).join('');
+ }catch(err){
+  document.getElementById('h-steps').innerHTML=`<div style="color:#ff8080;font-size:11px;padding:8px;background:rgba(255,0,0,.1);border-radius:8px;margin-top:8px">⚠️ Error: ${err.message}</div>`;
+ }
 }
 function setMood(k){
   const t=today(),jArr=D.journals||[],i=jArr.findIndex(j=>j.date===t);
