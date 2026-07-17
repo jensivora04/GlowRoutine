@@ -586,22 +586,24 @@ const PM_T=['8:00 PM','8:30 PM','9:00 PM','9:30 PM','10:00 PM','10:30 PM','11:00
 //  DATA
 // ══════════════════════════════════════════
 function defD(){return{
-  steps:JSON.parse(JSON.stringify(MORNING_STEPS)), // morning steps (customizable)
-  logs:[],          // morning logs: [{date, done:[ids]}]
-  nightNum:1,       // current night number
-  nightDone:[],     // step indices done for current night
-  nightHistory:[],  // [{date, nightNum}]
-  moistIdx:0,       // selected moisturizer index
-  sampleIdx:0,      // selected sample index (for night 20+)
+  steps:JSON.parse(JSON.stringify(MORNING_STEPS)),
+  logs:[],
+  nightNum:1,
+  nightDone:[],
+  nightHistory:[],
+  moistIdx:0,
+  sampleIdx:0,
   products:[],journals:[],
   mstock:JSON.parse(JSON.stringify(DEF_STOCK)),mlogs:[],wlogs:[],
   streak:0,lastDone:null,
+  maskStartDate:today(),  // set on first use so Week 1 aligns to correct Wed
   rem:{amOn:false,pmOn:false,amT:'7:00 AM',pmT:'9:00 PM'},
 };}
 
 let D=defD();
 function load(){try{const s=localStorage.getItem(KEY);if(s)D={...defD(),...JSON.parse(s)};}catch{}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(D));}catch{}}
+function ensureMaskStart(){if(!D.maskStartDate){D.maskStartDate=today();save();}}
 
 // ══════════════════════════════════════════
 //  UTILS
@@ -613,7 +615,7 @@ const esc=s=>(s||'').replace(/'/g,"\\'");
 const getMLog=()=>D.logs.find(l=>l.date===today());
 const getDone=()=>getMLog()?.done??[];
 const getW=()=>D.wlogs.find(l=>l.date===today())?.g??0;
-const getMW=()=>Math.min(Math.floor(new Set(D.mlogs.map(l=>l.date)).size/2)+1,12);
+const getMW=()=>{const w1Mon=getMaskStartDate();const now=new Date();now.setHours(0,0,0,0);const diff=Math.floor((now-w1Mon)/864e5);if(diff<0)return 1;return Math.min(Math.floor(diff/7)+1,12);};
 const getTM=()=>{const d=new Date().getDay(),w=getMW(),s=SCHED[w-1];return d===3?s?.wed:d===0?s?.sun:null;};
 
 function getNightRoutine(n){
@@ -923,13 +925,16 @@ function saveProd(){
 // ══════════════════════════════════════════
 function setMaskTab(t){maskTab=t;document.getElementById('m-tab-s').className='time-btn '+(t==='s'?'am-on':'');document.getElementById('m-tab-k').className='time-btn '+(t==='k'?'am-on':'');document.getElementById('m-sched').style.display=t==='s'?'block':'none';document.getElementById('m-stock').style.display=t==='k'?'block':'none';}
 function getMaskStartDate(){
-  // Week 1 Monday = this week's Monday minus (currentWeek-1)*7 days
-  const wk=getMW();
-  const now=new Date();now.setHours(0,0,0,0);
-  const dow=now.getDay();
-  const daysToMon=dow===0?6:dow-1;
-  const thisMon=new Date(now);thisMon.setDate(now.getDate()-daysToMon);
-  const w1Mon=new Date(thisMon);w1Mon.setDate(thisMon.getDate()-(wk-1)*7);
+  // Week 1 Monday = Monday of the week containing the first Wednesday on/after maskStartDate
+  ensureMaskStart();
+  const start=new Date(D.maskStartDate+'T00:00:00');
+  const dow=start.getDay(); // 0=Sun … 6=Sat
+  const daysToWed=(3-dow+7)%7; // 0 if today is Wed, otherwise days until next Wed
+  const firstWed=new Date(start);
+  firstWed.setDate(start.getDate()+daysToWed);
+  // Monday of that week (Wed - 2)
+  const w1Mon=new Date(firstWed);
+  w1Mon.setDate(firstWed.getDate()-2);
   return w1Mon;
 }
 function getMaskScheduleWithDates(){
@@ -1071,7 +1076,7 @@ document.getElementById('step-inp').addEventListener('keydown',e=>{if(e.key==='E
 // ══════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════
-load();
+load();ensureMaskStart();
 // Set tod based on time of day
 tod=new Date().getHours()<17?'AM':'PM';
 rHome();
