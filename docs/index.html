@@ -7,24 +7,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#FDF6F4; --bg2:#FEF0F0; --surface:#FFFFFF;
-  --rose:#E8737E; --rose-l:#FCE8EC; --rose-xl:#FEF4F6; --rose-d:#C45560;
-  --accent:#C8A8D8; --accent-l:#EEE4F8;
-  --peach:#F4A898; --peach-l:#FCE8E4;
-  --mint:#6BAE85; --mint-l:#DFF2E8;
-  --gold:#F0C878; --gold-l:#FEF4DC;
-  --border:#F0E0E4; --text:#2D1820; --text2:#8C6870; --text3:#C4A8AE;
-  --danger:#E07070; --card1:#FFF5F7; --card2:#FFF8EC; --card3:#F0EEF8; --card4:#EEF8F2;
-  --shadow:0 4px 18px rgba(200,80,100,.09); --shadow-sm:0 2px 8px rgba(200,80,100,.07);
-  --r:16px; --r-sm:10px; --r-full:999px;
-}
+:root{--bg:#FDF6F4;--bg2:#FEF0F0;--surface:#FFFFFF;--rose:#E8737E;--rose-l:#FCE8EC;--rose-xl:#FEF4F6;--rose-d:#C45560;--accent:#C8A8D8;--accent-l:#EEE4F8;--mint:#6BAE85;--mint-l:#DFF2E8;--gold:#F0C878;--gold-l:#FEF4DC;--border:#F0E0E4;--text:#2D1820;--text2:#8C6870;--text3:#C4A8AE;--danger:#E07070;--card2:#FFF8EC;--card3:#F0EEF8;--shadow:0 4px 18px rgba(200,80,100,.09);--shadow-sm:0 2px 8px rgba(200,80,100,.07);--r:16px;--r-sm:10px;--r-full:999px}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 .app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);position:relative;padding-bottom:82px}
 @media(min-width:520px){body{background:#EDE0E4}.app{box-shadow:0 0 50px rgba(0,0,0,.1)}.bottom-nav{border-radius:0 0 20px 20px}}
-
-/* HEADER */
 .header{padding:52px 20px 10px;display:flex;justify-content:space-between;align-items:flex-start;position:sticky;top:0;z-index:40;background:var(--bg)}
 .header h1{font-size:26px;font-weight:800;letter-spacing:-.5px;line-height:1.1}
 .header h1 .heart{color:var(--rose)}
@@ -32,32 +19,25 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 .header-right{display:flex;align-items:center;gap:8px}
 .streak-pill{display:inline-flex;align-items:center;gap:4px;background:var(--rose-l);border-radius:var(--r-full);padding:6px 12px;font-size:13px;font-weight:700;color:var(--rose-d)}
 .avatar{width:36px;height:36px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
-
-/* BOTTOM NAV */
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid var(--border);display:flex;z-index:50;padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -4px 16px rgba(200,80,100,.07)}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 2px 10px;border:none;background:transparent;cursor:pointer;gap:3px;color:var(--text3);font-family:inherit;font-size:10px;font-weight:600;transition:color .15s}
 .nav-btn .nav-icon{font-size:20px;line-height:1;transition:transform .15s}
 .nav-btn.active{color:var(--rose)}
 .nav-btn.active .nav-icon{transform:scale(1.15)}
-
-/* PANES */
 .pane{display:none;padding:6px 20px 0;animation:fu .25s ease}
 .pane.active{display:block}
 @keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-/* CARDS */
 .card{background:var(--surface);border-radius:var(--r);padding:18px;margin-bottom:14px;box-shadow:var(--shadow-sm)}
 .card-label{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px}
 .card-title{font-size:15px;font-weight:700}
 .card-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .view-all{font-size:13px;font-weight:600;color:var(--rose);background:none;border:none;cursor:pointer;font-family:inherit}
-
 /* HOME */
 .greeting{padding:4px 20px 12px}
 .greeting h2{font-size:22px;font-weight:700}
 .greeting p{font-size:13px;color:var(--text2);margin-top:2px}
 .mood-card{background:var(--rose-xl);display:flex;align-items:center}
-.mood-card .mood-body{flex:1}
+.mood-body{flex:1}
 .mood-big{font-size:20px;font-weight:700;margin-bottom:4px}
 .mood-sub{font-size:13px;color:var(--text2)}
 .mood-art{font-size:52px;margin-left:12px}
@@ -78,7 +58,6 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 .mask-sub{font-size:11px;color:var(--text2);margin-bottom:8px}
 .water-card{background:var(--card3);display:flex;flex-direction:column;align-items:center}
 .water-ring-wrap{position:relative;width:72px;height:72px;margin:6px 0}
-.water-ring-wrap svg{display:block}
 .water-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .water-num{font-size:15px;font-weight:700;line-height:1}
 .water-unit{font-size:9px;color:var(--text2);font-weight:600}
@@ -96,34 +75,47 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 .stat-emoji{font-size:18px}
 .stat-val{font-size:17px;font-weight:700}
 .stat-lbl{font-size:10px;color:var(--text2);text-align:center}
-
-/* PAGE HEADER */
+/* PAGE */
 .page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .page-title{font-size:20px;font-weight:800}
 .add-btn{background:var(--rose);color:#fff;border:none;border-radius:10px;padding:7px 14px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
-
-/* TIME TOGGLE */
+/* TOGGLE */
 .time-toggle{display:flex;background:var(--border);border-radius:12px;padding:3px;margin-bottom:14px}
 .time-btn{flex:1;padding:9px;border:none;background:transparent;border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;color:var(--text2);transition:all .15s}
 .time-btn.am-on{background:var(--gold);color:#7A5000}
 .time-btn.pm-on{background:var(--accent);color:#5A3880}
-
 /* ROUTINE STEPS */
 .r-step{display:flex;align-items:center;background:var(--surface);border-radius:12px;padding:13px;margin-bottom:8px;box-shadow:var(--shadow-sm);cursor:pointer;transition:background .15s}
 .r-step.done{background:var(--rose-l);opacity:.9}
 .step-num{width:32px;height:32px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--text2);margin-right:14px;flex-shrink:0}
 .step-num.done{background:var(--rose);color:#fff}
 .step-num.done::after{content:'✓'}
-.step-txt{flex:1;font-size:15px;font-weight:500}
+.step-txt{flex:1;font-size:14px;font-weight:500;line-height:1.3}
 .step-txt.done{color:var(--rose-d);text-decoration:line-through}
-.time-tag{font-size:10px;font-weight:700;border-radius:6px;padding:3px 7px}
+.time-tag{font-size:10px;font-weight:700;border-radius:6px;padding:3px 7px;flex-shrink:0}
 .tag-am{background:#FFF0C0;color:#A07000}
 .tag-pm{background:var(--accent-l);color:#7050A0}
+.tag-mask{background:#FCE8EC;color:#C45560}
 .add-step-btn{border:1.5px dashed var(--rose);border-radius:12px;padding:13px;text-align:center;width:100%;background:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;color:var(--rose);margin-top:4px}
 .celebration{background:var(--rose-l);border-radius:var(--r);padding:18px;text-align:center;margin-bottom:14px}
 .cel-emoji{font-size:32px}
 .cel-text{font-size:15px;font-weight:700;color:var(--rose-d);margin-top:6px}
-
+/* NIGHT BANNER */
+.night-banner{border-radius:var(--r);padding:16px 18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.night-banner.regular{background:var(--accent-l)}
+.night-banner.mask{background:var(--rose-xl);border:2px solid var(--rose-l)}
+.night-num{font-size:22px;font-weight:800;color:var(--text)}
+.night-sub{font-size:13px;color:var(--text2);margin-top:2px}
+.night-count-box{text-align:right}
+.night-count-num{font-size:22px;font-weight:800;color:var(--rose)}
+.night-count-lbl{font-size:10px;color:var(--text2)}
+.picker-card{background:var(--surface);border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow-sm)}
+.picker-title{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.picker-name{font-size:13px;font-weight:600;color:var(--rose-d);margin-top:4px}
+.complete-night-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:14px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px}
+.complete-night-btn:disabled{opacity:.5;cursor:not-allowed}
+.night-progress-bar{height:5px;background:var(--border);border-radius:var(--r-full);overflow:hidden;margin-top:8px}
+.night-progress-fill{height:100%;background:var(--accent);border-radius:var(--r-full);transition:width .3s}
 /* PRODUCTS */
 .search-bar{width:100%;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;font-family:inherit;font-size:14px;color:var(--text);margin-bottom:10px;outline:none}
 .search-bar:focus{border-color:var(--rose)}
@@ -138,7 +130,6 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 .p-brand{font-size:12px;color:var(--text2);margin-top:2px}
 .p-notes{font-size:11px;color:var(--text3);margin-top:3px}
 .cat-tag{font-size:10px;font-weight:600;border-radius:6px;padding:3px 8px}
-
 /* MASKS */
 .sched-header{display:flex;padding-bottom:8px;font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.6px}
 .sched-row{display:flex;align-items:center;background:var(--surface);border-radius:12px;padding:9px;margin-bottom:7px;box-shadow:var(--shadow-sm)}
@@ -157,7 +148,6 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 .bar-track{height:7px;background:var(--border);border-radius:var(--r-full);overflow:hidden;margin-bottom:6px}
 .bar-fill{height:100%;border-radius:var(--r-full);transition:width .4s}
 .stock-meta{display:flex;justify-content:space-between;font-size:10px;color:var(--text2)}
-
 /* JOURNAL */
 .mood-picker{display:flex;gap:8px;margin-bottom:14px}
 .mood-opt{flex:1;padding:9px 4px;border-radius:10px;border:1.5px solid var(--border);display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;background:none;font-family:inherit;transition:all .15s}
@@ -174,7 +164,6 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 .j-notes{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:7px}
 .tag-row{display:flex;flex-wrap:wrap;gap:5px}
 .c-tag{background:var(--rose-l);border-radius:var(--r-full);padding:2px 9px;font-size:10px;color:var(--rose-d);font-weight:600}
-
 /* SETTINGS */
 .s-stats{display:flex;flex-wrap:wrap;gap:8px}
 .s-stat{flex:1;min-width:28%;background:var(--bg2);border-radius:12px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:3px}
@@ -189,21 +178,18 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 .toggle::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
 .toggle.on::after{transform:translateX(18px)}
 .t-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-
 /* EMPTY */
 .empty{display:flex;flex-direction:column;align-items:center;padding:48px 0}
 .empty-e{font-size:48px;margin-bottom:12px}
 .empty-t{font-size:16px;font-weight:700}
 .empty-s{font-size:13px;color:var(--text2);margin-top:4px;text-align:center}
-
 /* BUTTONS */
-.btn-p{background:var(--rose);color:#fff;border:none;border-radius:12px;padding:13px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;width:100%;transition:opacity .15s}
+.btn-p{background:var(--rose);color:#fff;border:none;border-radius:12px;padding:13px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;width:100%}
 .btn-s{background:var(--border);color:var(--text2);border:none;border-radius:12px;padding:13px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;width:100%}
 .modal-actions{display:flex;gap:8px;margin-top:6px}
 .modal-actions .btn-p,.modal-actions .btn-s{flex:1;padding:12px}
 .log-btn{background:var(--rose);color:#fff;border:none;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}
 .log-done{font-size:12px;color:var(--mint);font-weight:600;margin-top:4px}
-
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
 .modal-overlay.open{opacity:1;pointer-events:all}
@@ -218,7 +204,6 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 <body>
 <div class="app">
 
-<!-- HEADER -->
 <header class="header">
   <div>
     <h1>GlowRoutine <span class="heart">♡</span></h1>
@@ -248,12 +233,19 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
   </div>
   <div class="card">
     <div class="card-row">
-      <div class="card-title">Today's Routine</div>
+      <div class="card-title">☀️ Morning Routine</div>
       <button class="view-all" onclick="go('routine')">View all →</button>
     </div>
     <div class="prog-bar-wrap"><div class="prog-bar" id="h-prog" style="width:0%"></div></div>
-    <div class="prog-label" id="h-prog-lbl">0/5 steps done</div>
+    <div class="prog-label" id="h-prog-lbl">0/7 steps done</div>
     <div class="step-list" id="h-steps"></div>
+  </div>
+  <div class="card" style="background:var(--accent-l);padding:14px 16px">
+    <div class="card-label">🌙 TONIGHT</div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div id="h-night-info" style="flex:1"></div>
+      <button class="view-all" onclick="go('routine');setTOD('PM')">Go to Night →</button>
+    </div>
   </div>
   <div class="row-cards">
     <div class="half-card mask-h-card">
@@ -297,11 +289,39 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
   </div>
   <div class="time-toggle">
     <button class="time-btn am-on" id="btn-am" onclick="setTOD('AM')">☀️ Morning</button>
-    <button class="time-btn" id="btn-pm" onclick="setTOD('PM')">🌙 Evening</button>
+    <button class="time-btn" id="btn-pm" onclick="setTOD('PM')">🌙 Night</button>
   </div>
-  <div id="r-list"></div>
-  <button class="add-step-btn" onclick="openAddStep()">+ Add Step</button>
-  <div id="r-cel" style="display:none;margin-top:10px"></div>
+
+  <!-- MORNING -->
+  <div id="r-morning">
+    <div id="r-list"></div>
+    <button class="add-step-btn" onclick="openAddStep()">+ Add Step</button>
+    <div id="r-cel" style="display:none;margin-top:10px"></div>
+  </div>
+
+  <!-- NIGHT -->
+  <div id="r-night" style="display:none">
+    <div id="night-banner-el"></div>
+    <!-- Moisturizer Picker (always shown for night) -->
+    <div class="picker-card">
+      <div class="picker-title">💧 Full-Size Moisturizer (tap to change)</div>
+      <div class="scroll-x" id="moist-chips"></div>
+      <div class="picker-name" id="moist-name"></div>
+    </div>
+    <!-- Sample Picker (shown for Night 20+) -->
+    <div class="picker-card" id="sample-picker-card" style="display:none">
+      <div class="picker-title">🧪 Current Sample (tap to change)</div>
+      <div class="scroll-x" id="sample-chips"></div>
+      <div class="picker-name" id="sample-name"></div>
+    </div>
+    <div id="night-steps-list"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;margin-bottom:4px">
+      <div style="font-size:12px;color:var(--text2)" id="night-done-count">0/0 done</div>
+      <button style="background:none;border:none;font-size:12px;color:var(--rose-d);font-weight:600;cursor:pointer;font-family:inherit" onclick="resetNight()">Reset</button>
+    </div>
+    <button class="complete-night-btn" id="complete-night-btn" onclick="completeNight()" disabled>Complete Night & Move to Next →</button>
+    <div id="night-cel" style="display:none;margin-top:10px"></div>
+  </div>
 </div>
 
 <!-- PRODUCTS -->
@@ -310,7 +330,7 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
     <div class="page-title">My Products</div>
     <button class="add-btn" onclick="openAddProd()">+ Add</button>
   </div>
-  <input type="text" class="search-bar" id="prod-search" placeholder="Search products..." oninput="renderProds()">
+  <input type="text" class="search-bar" id="prod-search" placeholder="Search products..." oninput="rProds()">
   <div class="scroll-x" id="prod-filters"></div>
   <div id="prod-list"></div>
 </div>
@@ -347,13 +367,18 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
     <div class="s-stats" id="s-stats"></div>
   </div>
   <div class="card">
+    <div class="card-row" style="margin-bottom:6px"><div class="card-title">🌙 Night Progress</div></div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:10px">You are on Night <strong id="s-night-num">1</strong>. Total nights completed: <strong id="s-nights-done">0</strong>.</div>
+    <button class="btn-s" style="font-size:13px;padding:10px" onclick="if(confirm('Reset night counter to Night 1?')){D.nightNum=1;D.nightDone=[];save();rSettings();alert('Reset to Night 1!');}">Reset Night Counter</button>
+  </div>
+  <div class="card">
     <div class="card-title" style="margin-bottom:14px">Daily Reminders</div>
     <div class="rem-card">
       <div class="rem-row"><span class="rem-e">☀️</span><div class="rem-info"><div class="rem-title">Morning Routine</div><div class="rem-sub">AM reminder</div></div><button class="toggle" id="tog-am" onclick="togRem('am')"></button></div>
       <div class="t-chips" id="am-chips"></div>
     </div>
     <div class="rem-card">
-      <div class="rem-row"><span class="rem-e">🌙</span><div class="rem-info"><div class="rem-title">Evening Routine</div><div class="rem-sub">PM reminder</div></div><button class="toggle" id="tog-pm" onclick="togRem('pm')"></button></div>
+      <div class="rem-row"><span class="rem-e">🌙</span><div class="rem-info"><div class="rem-title">Night Routine</div><div class="rem-sub">PM reminder</div></div><button class="toggle" id="tog-pm" onclick="togRem('pm')"></button></div>
       <div class="t-chips" id="pm-chips"></div>
     </div>
   </div>
@@ -361,13 +386,12 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
     <div style="font-size:44px;margin-bottom:10px">🌸</div>
     <div style="font-size:20px;font-weight:800">GlowRoutine</div>
     <div style="font-size:13px;color:var(--text2);margin-top:6px">Your daily skincare companion</div>
-    <div style="font-size:11px;color:var(--text3);margin-top:4px">v1.0.0</div>
+    <div style="font-size:11px;color:var(--text3);margin-top:4px">v2.0.0</div>
   </div>
 </div>
 
 </main>
 
-<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
   <button class="nav-btn active" data-t="home" onclick="go('home')"><span class="nav-icon">🏠</span>Home</button>
   <button class="nav-btn" data-t="routine" onclick="go('routine')"><span class="nav-icon">✨</span>Routine</button>
@@ -380,7 +404,7 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 
 <!-- MODALS -->
 <div class="modal-overlay" id="mod-step"><div class="modal-sheet">
-  <div class="modal-title" id="mod-step-ttl">Add Step</div>
+  <div class="modal-title" id="mod-step-ttl">Add Morning Step</div>
   <div class="f-label">Step Name</div>
   <input class="f-input" id="step-inp" placeholder="e.g. Eye Cream...">
   <div class="modal-actions"><button class="btn-s" onclick="closeM('mod-step')">Cancel</button><button class="btn-p" onclick="saveStep()">Add</button></div>
@@ -406,15 +430,65 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 </div></div>
 
 <script>
-// ── DATA ──────────────────────────────────
-const KEY='@GlowRoutine:v2';
-const DEF_STEPS=[
-  {id:'s1',name:'Cleanser',t:'AM',o:1},{id:'s2',name:'Toner',t:'AM',o:2},
-  {id:'s3',name:'Serum',t:'AM',o:3},{id:'s4',name:'Moisturizer',t:'AM',o:4},
-  {id:'s5',name:'Sunscreen',t:'AM',o:5},{id:'s6',name:'Makeup Remover',t:'PM',o:1},
-  {id:'s7',name:'Cleanser',t:'PM',o:2},{id:'s8',name:'Toner',t:'PM',o:3},
-  {id:'s9',name:'Serum',t:'PM',o:4},{id:'s10',name:'Night Cream',t:'PM',o:5},
+// ══════════════════════════════════════════
+//  CONSTANTS
+// ══════════════════════════════════════════
+const KEY='@GlowRoutine:v3';
+
+const MORNING_STEPS=[
+  {id:'m1',name:'Zeroid Pimprove Gel Cleanser',o:1},
+  {id:'m2',name:'Zeroid Pimprove Toner',o:2},
+  {id:'m3',name:'Anua PDRN Hyaluronic Capsule 100 Serum Mist',o:3},
+  {id:'m4',name:'Bring Green Tea Tree Cica Soothing Serum',o:4},
+  {id:'m5',name:'Pimple Cream',o:5},
+  {id:'m6',name:'MEDIHEAL Madecassoside Blemish Repair Cream',o:6},
+  {id:'m7',name:'SKIN1004 Centella Hyalu-Cica Water-Fit Sun Serum SPF50+',o:7},
 ];
+
+// Night routines — 'MOISTURIZER' and 'SAMPLE' are replaced by user selections
+const NIGHT_ROUTINES=[
+  {n:1,steps:['Beplain Cleansing Foam','Zeroid Toner','Anua PDRN Ampoule Stick #1','Zeroid Pimprove Cream Mini #1','Tret Cream']},
+  {n:2,steps:['Beplain Cleansing Foam','Zeroid Toner','Anua PDRN Ampoule Stick #2','Zeroid Pimprove Cream Mini #2','Tret Cream']},
+  {n:3,mask:true,steps:['Beplain Cleansing Foam','Zeroid Toner','🎭 Mediheal Madecassoside Mask','Zeroid Pimprove Cream Mini #3']},
+  {n:4,steps:['Beplain Cleansing Foam','Zeroid Toner','Anua PDRN Ampoule Stick #3','Torriden Cellmazing Collagen Firming Cream','Medicube AGE-R Booster Pro','Medicube PDRN Booster Gel']},
+  {n:5,steps:['Beplain Cleansing Foam','Zeroid Toner','Anua PDRN Ampoule Stick #4','Torriden Cellmazing Collagen Firming Ampoule','MOISTURIZER','Tret Cream']},
+  {n:6,steps:['Beplain Cleansing Foam','Zeroid Toner','Anua PDRN Hyaluronic Capsule 100 Serum','MOISTURIZER','Tret Cream']},
+  {n:7,mask:true,steps:['Beplain Cleansing Foam','Zeroid Toner','🎭 Biodance Mask','MOISTURIZER']},
+  {n:8,steps:['Beplain Cleansing Foam','Zeroid Toner','Anua Hyaluronic 100 Serum','MOISTURIZER','Medicube AGE-R Booster Pro','Medicube PDRN Booster Gel']},
+  {n:9,steps:['Beplain Cleansing Foam','Zeroid Toner','Anua Peach 70 Niacin Serum','MOISTURIZER','Tret Cream']},
+  {n:10,steps:['Beplain Cleansing Foam','Zeroid Toner','Anua Niacinamide 10% + TXA 4% Serum','Biodance Skin Glow Essence Cream','Tret Cream']},
+  {n:11,mask:true,steps:['Beplain Cleansing Foam','Zeroid Toner','🎭 Goodal Vita C Mask','MOISTURIZER']},
+  {n:12,steps:['Beplain Cleansing Foam','Zeroid Toner','Torriden Cellmazing Collagen Firming Ampoule','MOISTURIZER','Medicube AGE-R Booster Pro','Medicube PDRN Booster Gel']},
+  {n:13,steps:['Beplain Cleansing Foam','Zeroid Toner','Mediheal Sample Stick #1','MOISTURIZER','Tret Cream']},
+  {n:14,steps:['Beplain Cleansing Foam','Zeroid Toner','Mediheal Sample Stick #2','MOISTURIZER','Tret Cream']},
+  {n:15,mask:true,steps:['Beplain Cleansing Foam','Zeroid Toner','🎭 Abib Gummy Madecassoside Mask','MOISTURIZER']},
+  {n:16,steps:['Beplain Cleansing Foam','Zeroid Toner','Mediheal Sample Stick #3','MOISTURIZER','Tret Cream']},
+  {n:17,steps:['Beplain Cleansing Foam','Zeroid Toner','Mediheal Sample Stick #4','MOISTURIZER','Tret Cream']},
+  {n:18,steps:['Beplain Cleansing Foam','Zeroid Toner','Mediheal Sample Stick #5','MOISTURIZER','Tret Cream']},
+  {n:19,steps:['Beplain Cleansing Foam','Zeroid Toner','Mediheal Sample Stick #6','MOISTURIZER','Tret Cream']},
+  // Night 20+: uses SAMPLE + MOISTURIZER
+  {n:20,dynamic:true,steps:['Beplain Cleansing Foam','Zeroid Toner','SAMPLE','MOISTURIZER','Tret Cream']},
+];
+
+const SAMPLES=[
+  'Anua PDRN Ampoule Stick #1','Anua PDRN Ampoule Stick #2',
+  'Anua PDRN Ampoule Stick #3','Anua PDRN Ampoule Stick #4',
+  'Torriden Cellmazing Collagen Firming Ampoule',
+  'Anua PDRN Hyaluronic Capsule 100 Serum',
+  'Anua Hyaluronic 100 Serum','Anua Peach 70 Niacin Serum',
+  'Anua Niacinamide 10% + TXA 4% Serum',
+  'Mediheal Sample Stick #1','Mediheal Sample Stick #2',
+  'Mediheal Sample Stick #3','Mediheal Sample Stick #4',
+  'Mediheal Sample Stick #5','Mediheal Sample Stick #6',
+];
+
+const MOISTURIZERS=[
+  'Zeroid Pimprove Cream Mini #1','Zeroid Pimprove Cream Mini #2',
+  'Zeroid Pimprove Cream Mini #3','Torriden Cellmazing Collagen Firming Cream',
+  'Biodance Skin Glow Essence Cream',
+  'Mediheal Madecassoside Blemish Repair Cream (Full Size)',
+];
+
 const DEF_STOCK=[
   {n:'Medicube',s:13,u:0},{n:'Biodance',s:24,u:0},{n:'Mediheal Madecassoside',s:22,u:0},
   {n:'Mediheal Vita C',s:8,u:0},{n:'Mediheal Collagen',s:11,u:0},{n:'PRMR Mega Shot',s:5,u:0},
@@ -428,11 +502,9 @@ const SCHED=[
   {w:9,wed:'Abib Gummy Madecassoside',sun:'Mediheal Vita C'},{w:10,wed:'Mediheal Madecassoside',sun:'Biodance'},
   {w:11,wed:'Goodal Vita C',sun:'Medicube'},{w:12,wed:'Mediheal Collagen',sun:'Abib Gummy Heartleaf'},
 ];
-const MC={
-  'Mediheal Madecassoside':'#D4E8C4','Mediheal Vita C':'#FFF0C0','Mediheal Collagen':'#D4EEF5',
+const MC={'Mediheal Madecassoside':'#D4E8C4','Mediheal Vita C':'#FFF0C0','Mediheal Collagen':'#D4EEF5',
   'Biodance':'#F5D4E8','Medicube':'#E8D4F5','PRMR Mega Shot':'#FFE0B0','Goodal Vita C':'#FFF5C0',
-  'Abib Gummy Madecassoside':'#D4F5E8','Abib Gummy Heartleaf':'#C8F0D8',
-};
+  'Abib Gummy Madecassoside':'#D4F5E8','Abib Gummy Heartleaf':'#C8F0D8'};
 const CC={Cleanser:'#A8D8B9',Toner:'#B8D4E8',Serum:'#D4B8E8',Moisturizer:'#F0D4B0',
   Sunscreen:'#F0E0B0','Eye Cream':'#F0B8C8',Exfoliant:'#C8E0C0',Mask:'#E0C0D8',Oil:'#E8D4A0',Other:'#D0D0D0'};
 const CATS=['Cleanser','Toner','Serum','Moisturizer','Sunscreen','Eye Cream','Exfoliant','Mask','Oil','Other'];
@@ -444,39 +516,69 @@ const CONCERNS=['Dryness','Oiliness','Breakout','Redness','Sensitivity','Dullnes
 const AM_T=['6:00 AM','6:30 AM','7:00 AM','7:30 AM','8:00 AM','8:30 AM','9:00 AM'];
 const PM_T=['8:00 PM','8:30 PM','9:00 PM','9:30 PM','10:00 PM','10:30 PM','11:00 PM'];
 
-function defD(){return{steps:JSON.parse(JSON.stringify(DEF_STEPS)),logs:[],products:[],journal:[],
-  mstock:JSON.parse(JSON.stringify(DEF_STOCK)),mlogs:[],wlogs:[],streak:0,lastDone:null,
-  rem:{amOn:false,pmOn:false,amT:'7:00 AM',pmT:'9:00 PM'}};}
+// ══════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════
+function defD(){return{
+  steps:JSON.parse(JSON.stringify(MORNING_STEPS)), // morning steps (customizable)
+  logs:[],          // morning logs: [{date, done:[ids]}]
+  nightNum:1,       // current night number
+  nightDone:[],     // step indices done for current night
+  nightHistory:[],  // [{date, nightNum}]
+  moistIdx:0,       // selected moisturizer index
+  sampleIdx:0,      // selected sample index (for night 20+)
+  products:[],journals:[],
+  mstock:JSON.parse(JSON.stringify(DEF_STOCK)),mlogs:[],wlogs:[],
+  streak:0,lastDone:null,
+  rem:{amOn:false,pmOn:false,amT:'7:00 AM',pmT:'9:00 PM'},
+};}
 
 let D=defD();
 function load(){try{const s=localStorage.getItem(KEY);if(s)D={...defD(),...JSON.parse(s)};}catch{}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(D));}catch{}}
 
-// ── UTILS ─────────────────────────────────
+// ══════════════════════════════════════════
+//  UTILS
+// ══════════════════════════════════════════
 const today=()=>new Date().toISOString().split('T')[0];
 const fmt=d=>new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const esc=s=>(s||'').replace(/'/g,"\\'");
-const getTL=()=>D.logs.find(l=>l.date===today());
-const getC=()=>getTL()?.done??[];
+const getMLog=()=>D.logs.find(l=>l.date===today());
+const getDone=()=>getMLog()?.done??[];
 const getW=()=>D.wlogs.find(l=>l.date===today())?.g??0;
 const getMW=()=>Math.min(Math.floor(new Set(D.mlogs.map(l=>l.date)).size/2)+1,12);
 const getTM=()=>{const d=new Date().getDay(),w=getMW(),s=SCHED[w-1];return d===3?s?.wed:d===0?s?.sun:null;};
+
+function getNightRoutine(n){
+  if(n<=19)return NIGHT_ROUTINES.find(r=>r.n===n)||NIGHT_ROUTINES[19];
+  return NIGHT_ROUTINES[19]; // night 20+ = dynamic
+}
+
+function resolveSteps(nightR){
+  return nightR.steps.map(s=>{
+    if(s==='MOISTURIZER')return MOISTURIZERS[D.moistIdx]??MOISTURIZERS[0];
+    if(s==='SAMPLE')return SAMPLES[D.sampleIdx]??SAMPLES[0];
+    return s;
+  });
+}
+
 function streak(){
   const t=today(),y=new Date();y.setDate(y.getDate()-1);
   const ys=y.toISOString().split('T')[0],last=D.lastDone;
   if(!last||(last!==t&&last!==ys))return 0;
   let n=0;const c=new Date(last+'T00:00:00');
-  for(let i=0;i<365;i++){const ds=c.toISOString().split('T')[0];if(D.logs.find(l=>l.date===ds)){n++;c.setDate(c.getDate()-1);}else break;}
+  for(let i=0;i<365;i++){const ds=c.toISOString().split('T')[0];
+    const hasM=D.logs.find(l=>l.date===ds);
+    const hasN=D.nightHistory.find(h=>h.date===ds);
+    if(hasM||hasN){n++;c.setDate(c.getDate()-1);}else break;}
   return n;
 }
-function checkDone(){
-  const c=getC();
-  if(D.steps.every(s=>c.includes(s.id))&&D.lastDone!==today()){D.lastDone=today();}
-}
 
-// ── NAV ───────────────────────────────────
-let cur='home',tod=new Date().getHours()<17?'AM':'PM',maskTab='s',selCat='All',editPId=null,editJId=null,jMood='good',jCons=[],catF='Cleanser';
+// ══════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════
+let cur='home',tod='AM',maskTab='s',selCat='All',editPId=null,editJId=null,jMood='good',jCons=[],catF='Cleanser';
 
 function go(tab){
   document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
@@ -486,15 +588,14 @@ function go(tab){
   cur=tab;render(tab);
 }
 function render(tab){
-  if(tab==='home')rHome();
-  else if(tab==='routine')rRoutine();
-  else if(tab==='products')rProds();
-  else if(tab==='masks')rMasks();
-  else if(tab==='journal')rJ();
-  else if(tab==='settings')rSettings();
+  if(tab==='home')rHome();else if(tab==='routine')rRoutine();
+  else if(tab==='products')rProds();else if(tab==='masks')rMasks();
+  else if(tab==='journal')rJ();else if(tab==='settings')rSettings();
 }
 
-// ── HOME ──────────────────────────────────
+// ══════════════════════════════════════════
+//  HOME
+// ══════════════════════════════════════════
 function rHome(){
   const h=new Date().getHours();
   const g=h<12?'Good Morning':h<17?'Good Afternoon':'Good Evening';
@@ -503,41 +604,48 @@ function rHome(){
   document.getElementById('greet-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
   const sk=streak();
   document.getElementById('streak-val').textContent=sk;
-  const lj=D.journal.find(e=>e.date===today());
+  const lj=D.journals?.find(e=>e.date===today());
   const mk=lj?.mood??'great';const msg=MM[mk]??MM.great;
   document.getElementById('mood-ttl').textContent=msg.t;
   document.getElementById('mood-sub').textContent=msg.s;
   document.getElementById('mood-art').textContent=msg.a;
-  const tod2=h<17?'AM':'PM';
-  const steps=D.steps.filter(s=>s.t===tod2).sort((a,b)=>a.o-b.o).slice(0,5);
-  const done=steps.filter(s=>getC().includes(s.id)).length;
-  const pct=steps.length?done/steps.length*100:0;
+  // Morning steps
+  const ms=D.steps.sort((a,b)=>a.o-b.o).slice(0,5);
+  const done=getDone();
+  const mdone=ms.filter(s=>done.includes(s.id)).length;
+  const pct=ms.length?mdone/ms.length*100:0;
   document.getElementById('h-prog').style.width=pct+'%';
-  document.getElementById('h-prog-lbl').textContent=`${done}/${steps.length} steps done · ${tod2==='AM'?'☀️ Morning':'🌙 Evening'}`;
-  document.getElementById('h-steps').innerHTML=steps.map(s=>{
-    const d=getC().includes(s.id);
+  document.getElementById('h-prog-lbl').textContent=`${mdone}/${D.steps.length} steps done`;
+  document.getElementById('h-steps').innerHTML=ms.map(s=>{
+    const d=done.includes(s.id);
     return `<div class="step-item" onclick="togHStep('${s.id}')"><div class="step-circle ${d?'done':''}"></div><span class="step-name ${d?'done':''}">${s.name}</span></div>`;
   }).join('');
+  // Tonight
+  const nr=getNightRoutine(D.nightNum);
+  const nightDoneCount=D.nightDone.length;
+  const totalNightSteps=nr.steps.length;
+  const nightAllDone=nightDoneCount>=totalNightSteps;
+  document.getElementById('h-night-info').innerHTML=`
+    <div style="font-size:17px;font-weight:700">Night ${D.nightNum} ${nr.mask?'🎭 Mask Night':''}</div>
+    <div style="font-size:12px;color:var(--text2);margin-top:2px">${nightAllDone?'✓ Completed tonight!':nightDoneCount+'/'+totalNightSteps+' steps done'}</div>`;
+  // Mask
   const tm=getTM();const ml=D.mlogs.some(l=>l.date===today());
   document.getElementById('h-mask').innerHTML=tm
     ?`<div class="mask-name-sm">${tm}</div><div class="mask-sub">Sheet Mask · ~18 min</div>${!ml?`<button class="log-btn" onclick="logMH('${esc(tm)}')">Log Use</button>`:'<div class="log-done">✓ Done today!</div>'}`
     :`<div style="font-size:24px">😴</div><div style="font-size:13px;font-weight:700;margin-top:4px">Not today</div><div class="mask-sub">Wed & Sun only</div>`;
   updateW();
   document.getElementById('h-stats').innerHTML=[
-    {e:'🧴',v:D.products.length,l:'Products'},{e:'📓',v:D.journal.length,l:'Journal'},
+    {e:'🧴',v:D.products.length,l:'Products'},{e:'📓',v:(D.journals||[]).length,l:'Journal'},
     {e:'🎭',v:D.mlogs.length,l:'Masks Used'},{e:'🔥',v:sk,l:'Streak'},
   ].map(s=>`<div class="stat-item"><div class="stat-emoji">${s.e}</div><div class="stat-val">${s.v}</div><div class="stat-lbl">${s.l}</div></div>`).join('');
 }
-
 function togHStep(id){
   const t=today(),idx=D.logs.findIndex(l=>l.date===t);
   if(idx>=0){const c=D.logs[idx].done;D.logs[idx].done=c.includes(id)?c.filter(x=>x!==id):[...c,id];}
   else D.logs.push({date:t,done:[id]});
-  checkDone();save();rHome();
+  save();rHome();
 }
-
 function logMH(n){D.mlogs.push({date:today(),n});const s=D.mstock.find(x=>x.n===n);if(s)s.u++;save();rHome();}
-
 function adjWater(d){
   const t=today(),c=getW(),v=Math.max(0,Math.min(8,c+d));
   const i=D.wlogs.findIndex(l=>l.date===t);
@@ -550,46 +658,141 @@ function updateW(){
   document.getElementById('w-num').textContent=`${g}/8`;
 }
 
-// ── ROUTINE ───────────────────────────────
+// ══════════════════════════════════════════
+//  ROUTINE
+// ══════════════════════════════════════════
 function setTOD(t){
   tod=t;
   document.getElementById('btn-am').className='time-btn '+(t==='AM'?'am-on':'');
   document.getElementById('btn-pm').className='time-btn '+(t==='PM'?'pm-on':'');
-  rRoutine();
+  document.getElementById('r-morning').style.display=t==='AM'?'block':'none';
+  document.getElementById('r-night').style.display=t==='PM'?'block':'none';
+  if(t==='AM')rMorning();else rNight();
 }
+
 function rRoutine(){
-  const steps=D.steps.filter(s=>s.t===tod).sort((a,b)=>a.o-b.o);
-  const done=getC();
   document.getElementById('r-streak').textContent=streak();
   document.getElementById('r-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  if(tod==='AM')rMorning();else rNight();
+}
+
+// ── MORNING ────────────────────────────────
+function rMorning(){
+  const steps=D.steps.sort((a,b)=>a.o-b.o);
+  const done=getDone();
   const allDone=steps.length>0&&steps.every(s=>done.includes(s.id));
   document.getElementById('r-list').innerHTML=steps.map((s,i)=>{
     const d=done.includes(s.id);
-    return `<div class="r-step ${d?'done':''}" onclick="togRStep('${s.id}')" oncontextmenu="delStep(event,'${s.id}')">
+    return `<div class="r-step ${d?'done':''}" onclick="togMStep('${s.id}')" oncontextmenu="delStep(event,'${s.id}')">
       <div class="step-num ${d?'done':''}">${d?'':i+1}</div>
       <span class="step-txt ${d?'done':''}">${s.name}</span>
-      <span class="time-tag ${tod==='AM'?'tag-am':'tag-pm'}">${tod}</span>
+      <span class="time-tag tag-am">AM</span>
     </div>`;
   }).join('');
   const cel=document.getElementById('r-cel');
-  if(allDone){cel.style.display='block';cel.innerHTML=`<div class="celebration"><div class="cel-emoji">🎉</div><div class="cel-text">${tod==='AM'?'Morning routine complete!':'Evening routine complete!'}</div></div>`;}
+  if(allDone){cel.style.display='block';cel.innerHTML='<div class="celebration"><div class="cel-emoji">🌸</div><div class="cel-text">Morning routine complete! Glow up ✨</div></div>';}
   else cel.style.display='none';
 }
-function togRStep(id){
+function togMStep(id){
   const t=today(),idx=D.logs.findIndex(l=>l.date===t);
   if(idx>=0){const c=D.logs[idx].done;D.logs[idx].done=c.includes(id)?c.filter(x=>x!==id):[...c,id];}
   else D.logs.push({date:t,done:[id]});
-  checkDone();save();rRoutine();
+  save();rMorning();
 }
-function delStep(e,id){e.preventDefault();if(confirm('Remove this step?')){D.steps=D.steps.filter(s=>s.id!==id);save();rRoutine();}}
-function openAddStep(){document.getElementById('step-inp').value='';document.getElementById('mod-step-ttl').textContent=`Add ${tod} Step`;openM('mod-step');setTimeout(()=>document.getElementById('step-inp').focus(),300);}
+function delStep(e,id){e.preventDefault();if(confirm('Remove this step?')){D.steps=D.steps.filter(s=>s.id!==id);save();rMorning();}}
+function openAddStep(){document.getElementById('step-inp').value='';openM('mod-step');setTimeout(()=>document.getElementById('step-inp').focus(),300);}
 function saveStep(){
   const n=document.getElementById('step-inp').value.trim();if(!n)return;
-  const mo=Math.max(0,...D.steps.filter(s=>s.t===tod).map(s=>s.o));
-  D.steps.push({id:uid(),name:n,t:tod,o:mo+1});save();closeM('mod-step');rRoutine();
+  const mo=Math.max(0,...D.steps.map(s=>s.o));
+  D.steps.push({id:uid(),name:n,o:mo+1});save();closeM('mod-step');rMorning();
 }
 
-// ── PRODUCTS ──────────────────────────────
+// ── NIGHT ──────────────────────────────────
+function rNight(){
+  const nr=getNightRoutine(D.nightNum);
+  const steps=resolveSteps(nr);
+  const isMask=nr.mask||false;
+  const isDynamic=D.nightNum>=20;
+
+  // Night banner
+  const bannerEl=document.getElementById('night-banner-el');
+  bannerEl.innerHTML=`<div class="night-banner ${isMask?'mask':'regular'}">
+    <div>
+      <div class="night-num">Night ${D.nightNum} ${isMask?'🎭':''}</div>
+      <div class="night-sub">${isMask?'Mask Night — skip serum':'Nightly skincare routine'}</div>
+      <div class="night-progress-bar"><div class="night-progress-fill" style="width:${steps.length?D.nightDone.length/steps.length*100:0}%"></div></div>
+    </div>
+    <div class="night-count-box">
+      <div class="night-count-num">${D.nightDone.length}/${steps.length}</div>
+      <div class="night-count-lbl">steps done</div>
+    </div>
+  </div>`;
+
+  // Moisturizer picker
+  document.getElementById('moist-chips').innerHTML=MOISTURIZERS.map((m,i)=>
+    `<button class="chip ${D.moistIdx===i?'on':''}" onclick="selMoist(${i})">${i+1}. ${m.split('(')[0].trim()}</button>`
+  ).join('');
+  document.getElementById('moist-name').textContent='Selected: '+MOISTURIZERS[D.moistIdx];
+
+  // Sample picker (night 20+ only)
+  const sampleCard=document.getElementById('sample-picker-card');
+  if(isDynamic){
+    sampleCard.style.display='block';
+    document.getElementById('sample-chips').innerHTML=SAMPLES.map((s,i)=>
+      `<button class="chip ${D.sampleIdx===i?'on':''}" onclick="selSample(${i})">${i+1}. ${s}</button>`
+    ).join('');
+    document.getElementById('sample-name').textContent='Selected: '+SAMPLES[D.sampleIdx];
+  } else {
+    sampleCard.style.display='none';
+  }
+
+  // Steps list
+  document.getElementById('night-steps-list').innerHTML=steps.map((s,i)=>{
+    const d=D.nightDone.includes(i);
+    const isMaskStep=s.startsWith('🎭');
+    return `<div class="r-step ${d?'done':''}" onclick="togNStep(${i})" style="${isMaskStep?'background:var(--rose-xl)':''}">
+      <div class="step-num ${d?'done':''}">${d?'':i+1}</div>
+      <span class="step-txt ${d?'done':''}">${s}</span>
+      <span class="time-tag ${isMaskStep?'tag-mask':'tag-pm'}">PM</span>
+    </div>`;
+  }).join('');
+
+  // Done count + complete button
+  const allDone=D.nightDone.length>=steps.length&&steps.length>0;
+  document.getElementById('night-done-count').textContent=`${D.nightDone.length}/${steps.length} done`;
+  const btn=document.getElementById('complete-night-btn');
+  btn.disabled=!allDone;
+  btn.textContent=`Complete Night ${D.nightNum} & Move to Night ${D.nightNum+1} →`;
+
+  const cel=document.getElementById('night-cel');
+  if(allDone){cel.style.display='block';cel.innerHTML=`<div class="celebration"><div class="cel-emoji">🌙</div><div class="cel-text">Night ${D.nightNum} complete! Rest & glow ✨</div></div>`;}
+  else cel.style.display='none';
+}
+
+function togNStep(i){
+  D.nightDone=D.nightDone.includes(i)?D.nightDone.filter(x=>x!==i):[...D.nightDone,i];
+  save();rNight();
+}
+
+function selMoist(i){D.moistIdx=i;save();rNight();}
+function selSample(i){D.sampleIdx=i;save();rNight();}
+
+function completeNight(){
+  D.nightHistory.push({date:today(),nightNum:D.nightNum});
+  D.nightNum++;
+  D.nightDone=[];
+  D.lastDone=today();
+  save();rNight();
+  // Show completion message
+  alert(`Night ${D.nightNum-1} completed! 🌙 Now on Night ${D.nightNum}.`);
+}
+
+function resetNight(){
+  if(confirm('Clear all checked steps for tonight?')){D.nightDone=[];save();rNight();}}
+
+// ══════════════════════════════════════════
+//  PRODUCTS
+// ══════════════════════════════════════════
 function rProds(){
   const q=(document.getElementById('prod-search')?.value||'').toLowerCase();
   document.getElementById('prod-filters').innerHTML=['All',...CATS].map(c=>
@@ -617,14 +820,10 @@ function saveProd(){
   save();closeM('mod-prod');rProds();
 }
 
-// ── MASKS ─────────────────────────────────
-function setMaskTab(t){
-  maskTab=t;
-  document.getElementById('m-tab-s').className='time-btn '+(t==='s'?'am-on':'');
-  document.getElementById('m-tab-k').className='time-btn '+(t==='k'?'am-on':'');
-  document.getElementById('m-sched').style.display=t==='s'?'block':'none';
-  document.getElementById('m-stock').style.display=t==='k'?'block':'none';
-}
+// ══════════════════════════════════════════
+//  MASKS
+// ══════════════════════════════════════════
+function setMaskTab(t){maskTab=t;document.getElementById('m-tab-s').className='time-btn '+(t==='s'?'am-on':'');document.getElementById('m-tab-k').className='time-btn '+(t==='k'?'am-on':'');document.getElementById('m-sched').style.display=t==='s'?'block':'none';document.getElementById('m-stock').style.display=t==='k'?'block':'none';}
 function rMasks(){
   const wk=getMW();
   document.getElementById('wk-badge').textContent=`Week ${wk}/12`;
@@ -632,40 +831,22 @@ function rMasks(){
   document.getElementById('mask-banner').innerHTML=tm
     ?`<div class="card" style="background:${MC[tm]||'#FFF0E8'};margin-bottom:12px"><div class="card-label">TODAY'S MASK (${day===3?'Wednesday':'Sunday'})</div><div style="font-size:18px;font-weight:700;margin:6px 0">${tm}</div>${!ml?`<button class="log-btn" onclick="logM('${esc(tm)}')">✓ Mark as Used</button>`:'<div class="log-done">✓ Done today!</div>'}</div>`
     :`<div class="card" style="text-align:center;margin-bottom:12px"><div style="font-size:28px">😴</div><div style="font-weight:700;margin-top:4px">No mask today</div><div style="font-size:12px;color:var(--text2);margin-top:3px">Mask days are Wednesday & Sunday</div></div>`;
-
-  document.getElementById('m-sched').innerHTML=`
-    <div class="sched-header"><div style="width:40px;margin-right:10px">Wk</div><div style="flex:1;margin-right:6px">Wednesday</div><div style="flex:1">Sunday</div></div>
-    ${SCHED.map(s=>`<div class="sched-row ${s.w===wk?'cur':''} ${s.w<wk?'past':''}">
-      <div class="wk-circle ${s.w===wk?'cur':''} ${s.w<wk?'past':''}">${s.w<wk?'✓':s.w}</div>
-      <div class="m-chip" style="background:${MC[s.wed]||'#eee'}">${s.wed}</div>
-      <div class="m-chip" style="background:${MC[s.sun]||'#eee'}">${s.sun}</div>
-    </div>`).join('')}
-    ${D.mlogs.length?`<div class="section-title" style="margin-top:14px">Recent Logs</div>
-    ${[...D.mlogs].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,6).map(l=>`
-      <div style="display:flex;align-items:center;background:var(--surface);border-radius:10px;padding:11px;margin-bottom:7px;box-shadow:var(--shadow-sm)">
-        <div style="width:10px;height:10px;border-radius:50%;background:${MC[l.n]||'#E8909A'};margin-right:10px"></div>
-        <div style="flex:1"><div style="font-size:13px;font-weight:600">${l.n}</div><div style="font-size:11px;color:var(--text2)">${fmt(l.date)}</div></div>
-        <span style="color:var(--mint);font-size:14px">✓</span>
-      </div>`).join('')}`:''}`;
-
+  document.getElementById('m-sched').innerHTML=`<div class="sched-header"><div style="width:40px;margin-right:10px">Wk</div><div style="flex:1;margin-right:6px">Wednesday</div><div style="flex:1">Sunday</div></div>
+    ${SCHED.map(s=>`<div class="sched-row ${s.w===wk?'cur':''} ${s.w<wk?'past':''}"><div class="wk-circle ${s.w===wk?'cur':''} ${s.w<wk?'past':''}">${s.w<wk?'✓':s.w}</div><div class="m-chip" style="background:${MC[s.wed]||'#eee'}">${s.wed}</div><div class="m-chip" style="background:${MC[s.sun]||'#eee'}">${s.sun}</div></div>`).join('')}
+    ${D.mlogs.length?'<div class="section-title" style="margin-top:14px">Recent Logs</div>'+[...D.mlogs].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,6).map(l=>`<div style="display:flex;align-items:center;background:var(--surface);border-radius:10px;padding:11px;margin-bottom:7px;box-shadow:var(--shadow-sm)"><div style="width:10px;height:10px;border-radius:50%;background:${MC[l.n]||'#E8909A'};margin-right:10px"></div><div style="flex:1"><div style="font-size:13px;font-weight:600">${l.n}</div><div style="font-size:11px;color:var(--text2)">${fmt(l.date)}</div></div><span style="color:var(--mint);font-size:14px">✓</span></div>`).join(''):''}`;
   document.getElementById('m-stock').innerHTML=`<div style="font-size:12px;color:var(--text2);text-align:center;margin-bottom:12px">Tap a mask to log one use</div>
-    ${D.mstock.map(item=>{
-      const rem=item.s-item.u,pct=rem/item.s;
-      const bc=pct>.5?'var(--mint)':pct>.25?'var(--gold)':'var(--danger)';
-      const tc=pct>.5?'#4A8A65':pct>.25?'#A07000':'#C04050';
-      return `<div class="stock-card" onclick="manualM('${esc(item.n)}',${rem})">
-        <div class="stock-top"><div class="s-dot" style="background:${MC[item.n]||'#eee'}"></div><div class="s-name">${item.n}</div><div class="s-rem" style="color:${tc}">${rem} left</div></div>
-        <div class="bar-track"><div class="bar-fill" style="width:${Math.max(0,pct)*100}%;background:${bc}"></div></div>
-        <div class="stock-meta"><span>Started: ${item.s}</span><span>Used: ${item.u}</span><span>Left: ${rem}</span></div>
-      </div>`;
-    }).join('')}`;
+    ${D.mstock.map(item=>{const rem=item.s-item.u,pct=rem/item.s;const bc=pct>.5?'var(--mint)':pct>.25?'var(--gold)':'var(--danger)';const tc=pct>.5?'#4A8A65':pct>.25?'#A07000':'#C04050';
+    return `<div class="stock-card" onclick="manualM('${esc(item.n)}',${rem})"><div class="stock-top"><div class="s-dot" style="background:${MC[item.n]||'#eee'}"></div><div class="s-name">${item.n}</div><div class="s-rem" style="color:${tc}">${rem} left</div></div><div class="bar-track"><div class="bar-fill" style="width:${Math.max(0,pct)*100}%;background:${bc}"></div></div><div class="stock-meta"><span>Started: ${item.s}</span><span>Used: ${item.u}</span><span>Left: ${rem}</span></div></div>`;}).join('')}`;
 }
 function logM(n){D.mlogs.push({date:today(),n});const s=D.mstock.find(x=>x.n===n);if(s)s.u++;save();rMasks();}
 function manualM(n,rem){if(rem<=0){alert('Out of stock!');return;}if(confirm(`Log one use of ${n}?`)){D.mlogs.push({date:today(),n});const s=D.mstock.find(x=>x.n===n);if(s)s.u++;save();rMasks();}}
 
-// ── JOURNAL ───────────────────────────────
+// ══════════════════════════════════════════
+//  JOURNAL
+// ══════════════════════════════════════════
 function rJ(){
-  const sorted=[...D.journal].sort((a,b)=>b.date.localeCompare(a.date));
+  if(!D.journals)D.journals=[];
+  const sorted=[...D.journals].sort((a,b)=>b.date.localeCompare(a.date));
   const el=document.getElementById('j-list');
   if(!sorted.length){el.innerHTML=`<div class="empty"><div class="empty-e">📓</div><div class="empty-t">No entries yet</div><div class="empty-s">Track how your skin feels day to day</div></div>`;return;}
   el.innerHTML=sorted.map(e=>{
@@ -677,30 +858,34 @@ function rJ(){
     </div>`;
   }).join('');
 }
-function openAddJ(){editJId=null;jMood='good';jCons=[];document.getElementById('mod-j-ttl').textContent='New Entry';document.getElementById('ej-id').value='';document.getElementById('j-notes').value='';rJMood();rJCons();openM('mod-j');}
-function editJ(id){const e=D.journal.find(x=>x.id===id);if(!e)return;editJId=id;jMood=e.mood;jCons=[...(e.cons||[])];document.getElementById('mod-j-ttl').textContent='Edit Entry';document.getElementById('ej-id').value=id;document.getElementById('j-notes').value=e.notes||'';rJMood();rJCons();openM('mod-j');}
-function delJ(e,id){e.preventDefault();if(confirm('Delete this entry?')){D.journal=D.journal.filter(x=>x.id!==id);save();rJ();}}
+function openAddJ(){if(!D.journals)D.journals=[];editJId=null;jMood='good';jCons=[];document.getElementById('mod-j-ttl').textContent='New Entry';document.getElementById('ej-id').value='';document.getElementById('j-notes').value='';rJMood();rJCons();openM('mod-j');}
+function editJ(id){const e=D.journals.find(x=>x.id===id);if(!e)return;editJId=id;jMood=e.mood;jCons=[...(e.cons||[])];document.getElementById('mod-j-ttl').textContent='Edit Entry';document.getElementById('ej-id').value=id;document.getElementById('j-notes').value=e.notes||'';rJMood();rJCons();openM('mod-j');}
+function delJ(e,id){e.preventDefault();if(confirm('Delete this entry?')){D.journals=D.journals.filter(x=>x.id!==id);save();rJ();}}
 function rJMood(){document.getElementById('j-mood-pick').innerHTML=MOODS.map(m=>`<button class="mood-opt ${jMood===m.k?'on':''}" onclick="sMood('${m.k}')"><span class="mood-opt-e">${m.e}</span><span class="mood-opt-l">${m.l}</span></button>`).join('');}
 function sMood(k){jMood=k;rJMood();}
 function rJCons(){document.getElementById('j-concern-pick').innerHTML=CONCERNS.map(c=>`<button class="c-chip ${jCons.includes(c)?'on':''}" onclick="togC('${c}')">${c}</button>`).join('');}
 function togC(c){jCons=jCons.includes(c)?jCons.filter(x=>x!==c):[...jCons,c];rJCons();}
 function saveJ(){
-  const notes=document.getElementById('j-notes').value.trim();
-  if(!notes&&!jCons.length)return;
+  if(!D.journals)D.journals=[];
+  const notes=document.getElementById('j-notes').value.trim();if(!notes&&!jCons.length)return;
   const o={mood:jMood,cons:jCons,notes,date:today()};
-  if(editJId){const i=D.journal.findIndex(e=>e.id===editJId);if(i>=0)D.journal[i]={...D.journal[i],...o};}
-  else D.journal.push({id:uid(),...o});
+  if(editJId){const i=D.journals.findIndex(e=>e.id===editJId);if(i>=0)D.journals[i]={...D.journals[i],...o};}
+  else D.journals.push({id:uid(),...o});
   save();closeM('mod-j');rJ();
 }
 
-// ── SETTINGS ──────────────────────────────
+// ══════════════════════════════════════════
+//  SETTINGS
+// ══════════════════════════════════════════
 function rSettings(){
   const sk=streak();
   document.getElementById('s-stats').innerHTML=[
     {e:'🔥',v:sk,l:'Streak'},{e:'📅',v:D.logs.length,l:'Days Logged'},
-    {e:'✨',v:D.steps.length,l:'Steps'},{e:'🧴',v:D.products.length,l:'Products'},
-    {e:'📓',v:D.journal.length,l:'Journal'},{e:'🎭',v:D.mlogs.length,l:'Masks Used'},
+    {e:'✨',v:D.steps.length,l:'AM Steps'},{e:'🧴',v:D.products.length,l:'Products'},
+    {e:'📓',v:(D.journals||[]).length,l:'Journal'},{e:'🎭',v:D.mlogs.length,l:'Masks Used'},
   ].map(s=>`<div class="s-stat"><div class="stat-emoji">${s.e}</div><div class="stat-val">${s.v}</div><div class="stat-lbl">${s.l}</div></div>`).join('');
+  document.getElementById('s-night-num').textContent=D.nightNum;
+  document.getElementById('s-nights-done').textContent=D.nightHistory.length;
   const r=D.rem;
   document.getElementById('tog-am').className='toggle '+(r.amOn?'on':'');
   document.getElementById('tog-pm').className='toggle '+(r.pmOn?'on':'');
@@ -710,14 +895,21 @@ function rSettings(){
 function togRem(w){D.rem[w+'On']=!D.rem[w+'On'];save();rSettings();}
 function sRT(w,t){D.rem[w+'T']=t;save();rSettings();}
 
-// ── MODALS ────────────────────────────────
+// ══════════════════════════════════════════
+//  MODALS
+// ══════════════════════════════════════════
 function openM(id){document.getElementById(id).classList.add('open');}
 function closeM(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this)closeM(this.id);}));
 document.getElementById('step-inp').addEventListener('keydown',e=>{if(e.key==='Enter')saveStep();});
 
-// ── INIT ──────────────────────────────────
-load();rHome();
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+load();
+// Set tod based on time of day
+tod=new Date().getHours()<17?'AM':'PM';
+rHome();
 </script>
 </body>
 </html>
