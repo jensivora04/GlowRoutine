@@ -482,7 +482,7 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 // ══════════════════════════════════════════
 //  CONSTANTS
 // ══════════════════════════════════════════
-const KEY='@GlowRoutine:v3';
+const KEY='@SkinBloom:v1';
 
 const MORNING_STEPS=[
   {id:'m1',name:'Zeroid Pimprove Gel Cleanser',o:1},
@@ -1092,6 +1092,17 @@ document.getElementById('step-inp').addEventListener('keydown',e=>{if(e.key==='E
 //  INIT
 // ══════════════════════════════════════════
 load();ensureMaskStart();
+// Safety: ensure critical arrays are always valid
+if(!Array.isArray(D.steps)||D.steps.length===0)D.steps=JSON.parse(JSON.stringify(MORNING_STEPS));
+if(!Array.isArray(D.logs))D.logs=[];
+if(!Array.isArray(D.nightDone))D.nightDone=[];
+if(!Array.isArray(D.nightHistory))D.nightHistory=[];
+if(!Array.isArray(D.mlogs))D.mlogs=[];
+if(!Array.isArray(D.mstock)||D.mstock.length===0)D.mstock=JSON.parse(JSON.stringify(DEF_STOCK));
+if(!Array.isArray(D.wlogs))D.wlogs=[];
+if(!Array.isArray(D.products))D.products=[];
+if(!D.rem)D.rem={amOn:false,pmOn:false,amT:'7:00 AM',pmT:'9:00 PM'};
+if(!D.nightNum)D.nightNum=1;
 // Set tod based on time of day
 tod=new Date().getHours()<17?'AM':'PM';
 rHome();
