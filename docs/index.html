@@ -32,15 +32,19 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 .card-title{font-size:15px;font-weight:700}
 .card-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .view-all{font-size:13px;font-weight:600;color:var(--rose);background:none;border:none;cursor:pointer;font-family:inherit}
-/* HOME */
-.greeting{padding:4px 20px 12px}
-.greeting h2{font-size:22px;font-weight:700}
-.greeting p{font-size:13px;color:var(--text2);margin-top:2px}
-.mood-card{background:var(--rose-xl);display:flex;align-items:center}
-.mood-body{flex:1}
-.mood-big{font-size:20px;font-weight:700;margin-bottom:4px}
-.mood-sub{font-size:13px;color:var(--text2)}
-.mood-art{font-size:52px;margin-left:12px}
+/* HOME HERO */
+.hero-card{background:linear-gradient(135deg,#FCEEF3 0%,#FFF5ED 55%,#F5EDFF 100%);border-radius:24px;padding:22px 20px 18px;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 6px 24px rgba(219,116,139,.18)}
+.hero-blob{position:absolute;width:220px;height:220px;background:radial-gradient(circle,rgba(255,255,255,.7) 0%,transparent 70%);top:-80px;right:-60px;border-radius:50%;pointer-events:none}
+.hero-blob2{position:absolute;width:130px;height:130px;background:radial-gradient(circle,rgba(255,190,210,.35) 0%,transparent 70%);bottom:-45px;left:-25px;border-radius:50%;pointer-events:none}
+.hero-greeting{font-size:25px;font-weight:800;line-height:1.2;margin-bottom:4px}
+.hero-date{font-size:13px;color:var(--text2);margin-bottom:15px}
+.hero-divider{height:1px;background:rgba(219,116,139,.18);margin-bottom:13px}
+.hero-q{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);margin-bottom:9px}
+.mood-picker{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.mood-btn{background:rgba(255,255,255,.8);border:1.5px solid rgba(219,116,139,.22);border-radius:20px;padding:7px 13px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--text2)}
+.mood-btn.sel{background:var(--rose);border-color:var(--rose);color:#fff;box-shadow:0 3px 10px rgba(219,116,139,.4);transform:scale(1.05)}
+.mood-response{font-size:13px;font-weight:600;color:var(--rose-d);min-height:18px;transition:all .2s}
+.skin-tip{background:rgba(255,255,255,.65);border-radius:12px;padding:10px 13px;font-size:12px;color:var(--text2);margin-top:13px;border:1px solid rgba(219,116,139,.13);line-height:1.5}
 .prog-bar-wrap{height:6px;background:var(--border);border-radius:var(--r-full);overflow:hidden;margin-bottom:6px}
 .prog-bar{height:100%;background:var(--rose);border-radius:var(--r-full);transition:width .4s}
 .prog-label{font-size:11px;color:var(--text2);margin-bottom:14px}
@@ -219,17 +223,18 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 
 <!-- HOME -->
 <div id="pane-home" class="pane active">
-  <div class="greeting">
-    <h2 id="greet-txt">Good Morning, J 🌸</h2>
-    <p id="greet-date"></p>
-  </div>
-  <div class="card mood-card">
-    <div class="mood-body">
-      <div class="card-label">TODAY'S MOOD</div>
-      <div class="mood-big" id="mood-ttl">Glowing ✨</div>
-      <div class="mood-sub" id="mood-sub">Your skin is thriving!</div>
+  <div class="hero-card">
+    <div class="hero-blob"></div>
+    <div class="hero-blob2"></div>
+    <div style="position:relative;z-index:1">
+      <div class="hero-greeting" id="greet-txt">Good Morning, J 🌸</div>
+      <div class="hero-date" id="greet-date"></div>
+      <div class="hero-divider"></div>
+      <div class="hero-q">How's your skin today?</div>
+      <div class="mood-picker" id="mood-picker"></div>
+      <div class="mood-response" id="mood-response"></div>
+      <div class="skin-tip" id="skin-tip"></div>
     </div>
-    <div class="mood-art" id="mood-art">☁️</div>
   </div>
   <div class="card">
     <div class="card-row">
@@ -512,6 +517,22 @@ const MOODS=[{k:'great',e:'😊',l:'Great',c:'#6BAE85'},{k:'good',e:'🙂',l:'Go
   {k:'okay',e:'😐',l:'Okay',c:'#F0C080'},{k:'bad',e:'😔',l:'Bad',c:'#E07070'}];
 const MM={great:{t:'Glowing ✨',s:'Your skin is thriving!',a:'☁️'},good:{t:'Looking Good 🙂',s:'Keep up the routine!',a:'🌸'},
   okay:{t:'Doing Okay',s:'Hydrate & rest up 💧',a:'🌿'},bad:{t:'Needs TLC',s:'Be gentle with yourself',a:'🌙'}};
+const SKIN_TIPS=[
+  '💡 Pat toner gently — never rub. Pressure = irritation.',
+  '💡 Tret works best on clean, fully dry skin. Wait 15 min after cleansing!',
+  '💡 Hydration first, moisture to seal. Serum → cream, always.',
+  '💡 SPF is your #1 anti-aging product. Apply last, every single morning.',
+  '💡 Double cleanse on mask nights for best absorption.',
+  '💡 Less is more on Tret nights — skip strong actives.',
+  '💡 Sleep 7–9 hrs — your skin repairs itself while you rest.',
+  '💡 Consistency beats intensity. Show up for your skin every night.',
+  '💡 Sheet masks = bonus hydration, not a cleansing substitute.',
+  '💡 Drink your 8 glasses — glow starts from within. 💧',
+  '💡 Change your pillowcase weekly for clearer skin.',
+  '💡 Vitamin C in the morning + SPF = the glow power duo.',
+  '💡 Never skip moisturizer, even on oily skin days.',
+  '💡 Niacinamide + PDRN in your routine = even tone magic.',
+];
 const CONCERNS=['Dryness','Oiliness','Breakout','Redness','Sensitivity','Dullness','Dark Spots','Fine Lines','Puffiness','Uneven Tone'];
 const AM_T=['6:00 AM','6:30 AM','7:00 AM','7:30 AM','8:00 AM','8:30 AM','9:00 AM'];
 const PM_T=['8:00 PM','8:30 PM','9:00 PM','9:30 PM','10:00 PM','10:30 PM','11:00 PM'];
@@ -605,10 +626,11 @@ function rHome(){
   const sk=streak();
   document.getElementById('streak-val').textContent=sk;
   const lj=D.journals?.find(e=>e.date===today());
-  const mk=lj?.mood??'great';const msg=MM[mk]??MM.great;
-  document.getElementById('mood-ttl').textContent=msg.t;
-  document.getElementById('mood-sub').textContent=msg.s;
-  document.getElementById('mood-art').textContent=msg.a;
+  const mk=lj?.mood??null;const msg=mk?(MM[mk]??null):null;
+  document.getElementById('mood-picker').innerHTML=MOODS.map(m=>`<button class="mood-btn${mk===m.k?' sel':''}" onclick="setMood('${m.k}')">${m.e} ${m.l}</button>`).join('');
+  document.getElementById('mood-response').textContent=msg?msg.s:'Tap to log how your skin feels ✨';
+  const tipIdx=Math.floor(Date.now()/86400000)%SKIN_TIPS.length;
+  document.getElementById('skin-tip').textContent=SKIN_TIPS[tipIdx];
   // Morning steps
   const ms=D.steps.sort((a,b)=>a.o-b.o).slice(0,5);
   const done=getDone();
@@ -638,6 +660,11 @@ function rHome(){
     {e:'🧴',v:D.products.length,l:'Products'},{e:'📓',v:(D.journals||[]).length,l:'Journal'},
     {e:'🎭',v:D.mlogs.length,l:'Masks Used'},{e:'🔥',v:sk,l:'Streak'},
   ].map(s=>`<div class="stat-item"><div class="stat-emoji">${s.e}</div><div class="stat-val">${s.v}</div><div class="stat-lbl">${s.l}</div></div>`).join('');
+}
+function setMood(k){
+  const t=today(),jArr=D.journals||[],i=jArr.findIndex(j=>j.date===t);
+  if(i>=0)jArr[i].mood=k;else jArr.push({date:t,mood:k,skin:k,notes:'',concerns:[]});
+  D.journals=jArr;save();rHome();
 }
 function togHStep(id){
   const t=today(),idx=D.logs.findIndex(l=>l.date===t);
