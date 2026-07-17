@@ -57,6 +57,7 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 .step-circle.done::after{content:'✓';font-size:11px;color:#0E0A0C;font-weight:800}
 .step-name{font-size:14px;font-weight:500;color:var(--text)}
 .step-name.done{color:var(--text3);text-decoration:line-through}
+.step-type-lbl{font-size:10px;font-weight:700;color:var(--gold-d);text-transform:uppercase;letter-spacing:.5px;opacity:.9}
 .row-cards{display:flex;gap:12px;margin-bottom:14px}
 .half-card{flex:1;background:var(--surface);border-radius:20px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.45);border:1px solid rgba(212,168,69,.07)}
 .mask-h-card{background:linear-gradient(145deg,var(--card2),#221A06);border-color:rgba(212,168,69,.15)}
@@ -99,6 +100,7 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 .step-num.done::after{content:'✓'}
 .step-txt{flex:1;font-size:14px;font-weight:500;line-height:1.3;color:var(--text)}
 .step-txt.done{color:var(--text3);text-decoration:line-through}
+.step-txt-type{font-size:10px;font-weight:700;color:var(--gold-d);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:1px;opacity:.9}
 .time-tag{font-size:10px;font-weight:700;border-radius:8px;padding:3px 8px;flex-shrink:0;letter-spacing:.2px}
 .tag-am{background:rgba(212,168,69,.15);color:var(--gold-d)}
 .tag-pm{background:rgba(120,96,168,.15);color:#C0A0E0}
@@ -486,8 +488,10 @@ const MORNING_STEPS=[
   {id:'m4',name:'Bring Green Tea Tree Cica Soothing Serum',o:4},
   {id:'m5',name:'Pimple Cream',o:5},
   {id:'m6',name:'MEDIHEAL Madecassoside Blemish Repair Cream',o:6},
-  {id:'m7',name:'SKIN1004 Centella Hyalu-Cica Water-Fit Sun Serum SPF50+',o:7},
+  {id:'m7',name:'SKIN1004 Madagascar Centella Hyalu-Cica Water-Fit Sun Serum SPF50+ PA++++',o:7},
 ];
+const STEP_TYPE={m1:'Cleanser',m2:'Toner',m3:'Serum Mist',m4:'Serum',m5:'Spot Care',m6:'Cream',m7:'Sun Serum'};
+const STEP_SHORT={m7:'SKIN1004 SPF50+'};
 
 // Night routines — 'MOISTURIZER' and 'SAMPLE' are replaced by user selections
 const NIGHT_ROUTINES=[
@@ -683,7 +687,9 @@ function rHome(){
   document.getElementById('h-prog-lbl').textContent=`${mdone}/${D.steps.length} steps done · ${mdone===D.steps.length?'✓ All done!':'keep going ✨'}`;
   document.getElementById('h-steps').innerHTML=ms.map(s=>{
     const d=done.includes(s.id);
-    return `<div class="step-item" onclick="togHStep('${s.id}')"><div class="step-circle ${d?'done':''}"></div><span class="step-name ${d?'done':''}">${s.name}</span></div>`;
+    const type=STEP_TYPE[s.id]||'';
+    const name=STEP_SHORT[s.id]||s.name;
+    return `<div class="step-item" onclick="togHStep('${s.id}')"><div class="step-circle ${d?'done':''}"></div><span class="step-name ${d?'done':''}"><span class="step-type-lbl">${type}</span> — ${name}</span></div>`;
   }).join('');
   // Tonight
   const nr=getNightRoutine(D.nightNum);
@@ -750,6 +756,18 @@ function rRoutine(){
   if(tod==='AM')rMorning();else rNight();
 }
 
+function nightStepType(s){
+  if(s.startsWith('🎭'))return 'Mask';
+  if(/Cleansing Foam/i.test(s))return 'Cleanser';
+  if(/\bToner\b/i.test(s))return 'Toner';
+  if(/Tret/i.test(s))return 'Tretinoin';
+  if(/AGE-R Booster Pro/i.test(s))return 'Device';
+  if(/PDRN Booster Gel/i.test(s))return 'Gel';
+  if(/Ampoule|Sample Stick|SAMPLE/i.test(s))return 'Serum';
+  if(/Cream|Mini|MOISTURIZER/i.test(s))return 'Cream';
+  return '';
+}
+
 // ── MORNING ────────────────────────────────
 function rMorning(){
   const steps=D.steps.sort((a,b)=>a.o-b.o);
@@ -757,9 +775,11 @@ function rMorning(){
   const allDone=steps.length>0&&steps.every(s=>done.includes(s.id));
   document.getElementById('r-list').innerHTML=steps.map((s,i)=>{
     const d=done.includes(s.id);
+    const type=STEP_TYPE[s.id]||'';
+    const name=STEP_SHORT[s.id]||s.name;
     return `<div class="r-step ${d?'done':''}" onclick="togMStep('${s.id}')" oncontextmenu="delStep(event,'${s.id}')">
       <div class="step-num ${d?'done':''}">${d?'':i+1}</div>
-      <span class="step-txt ${d?'done':''}">${s.name}</span>
+      <span class="step-txt ${d?'done':''}"><span class="step-txt-type">${type}</span>${name}</span>
       <span class="time-tag tag-am">AM</span>
     </div>`;
   }).join('');
@@ -824,9 +844,11 @@ function rNight(){
   document.getElementById('night-steps-list').innerHTML=steps.map((s,i)=>{
     const d=D.nightDone.includes(i);
     const isMaskStep=s.startsWith('🎭');
+    const type=nightStepType(s);
+    const label=isMaskStep?s.replace('🎭 ',''):s;
     return `<div class="r-step ${d?'done':''}" onclick="togNStep(${i})" style="${isMaskStep?'background:var(--rose-xl)':''}">
       <div class="step-num ${d?'done':''}">${d?'':i+1}</div>
-      <span class="step-txt ${d?'done':''}">${s}</span>
+      <span class="step-txt ${d?'done':''}"><span class="step-txt-type">${isMaskStep?'🎭 Mask':type}</span>${label}</span>
       <span class="time-tag ${isMaskStep?'tag-mask':'tag-pm'}">PM</span>
     </div>`;
   }).join('');
