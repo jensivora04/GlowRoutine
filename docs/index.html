@@ -140,6 +140,20 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 .cat-tag{font-size:10px;font-weight:700;border-radius:8px;padding:3px 8px;letter-spacing:.2px}
 /* MASKS */
 .sched-header{display:flex;padding-bottom:8px;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px}
+.mask-week-section{margin-bottom:16px}
+.mask-week-hdr{font-size:10px;font-weight:700;color:var(--gold-d);text-transform:uppercase;letter-spacing:.9px;margin-bottom:9px;display:flex;align-items:center;gap:8px}
+.mask-week-hdr::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(212,168,69,.25),transparent)}
+.mask-line{display:flex;align-items:center;background:var(--surface);border-radius:13px;padding:11px 14px;margin-bottom:7px;box-shadow:0 2px 10px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.04);gap:10px;transition:all .15s}
+.mask-line.cur{border-color:rgba(212,168,69,.3);background:linear-gradient(135deg,#201C10,#1C1818)}
+.mask-line.past{opacity:.38}
+.mask-line.today-line{border-color:rgba(212,168,69,.5);box-shadow:0 4px 16px rgba(212,168,69,.12)}
+.ml-dow{font-size:10px;font-weight:700;color:var(--text3);width:26px;flex-shrink:0;letter-spacing:.3px}
+.ml-date{font-size:11px;font-weight:600;color:var(--text2);width:56px;flex-shrink:0}
+.ml-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ml-name{flex:1;font-size:13px;font-weight:700;color:var(--text);line-height:1.3}
+.ml-done-tag{font-size:10px;font-weight:700;color:#5ABA80;background:rgba(90,186,128,.12);padding:3px 8px;border-radius:20px;white-space:nowrap}
+.ml-today-tag{font-size:10px;font-weight:700;color:var(--gold-d);background:rgba(212,168,69,.12);padding:3px 8px;border-radius:20px;white-space:nowrap}
+.ml-upcoming{font-size:10px;color:var(--text3);font-weight:600;white-space:nowrap}
 .sched-row{display:flex;align-items:center;background:var(--surface);border-radius:14px;padding:10px;margin-bottom:8px;box-shadow:0 2px 12px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.04)}
 .sched-row.cur{border:1px solid rgba(212,168,69,.4);box-shadow:0 4px 20px rgba(212,168,69,.1)}
 .sched-row.past{opacity:.38}
@@ -289,14 +303,16 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
           <circle id="w-ring" cx="36" cy="36" r="28" fill="none" stroke="var(--gold)" stroke-width="7" stroke-dasharray="0 176" stroke-linecap="round"/>
         </svg>
         <div class="water-label">
-          <span class="water-num" id="w-num">0/8</span>
+          <span class="water-num" id="w-num">0/12</span>
           <span class="water-unit">glasses</span>
         </div>
       </div>
+      <div style="font-size:10px;font-weight:700;color:var(--gold-d);text-align:center;margin:-2px 0 6px;letter-spacing:.3px" id="w-liters">0.0 / 3.0 L</div>
       <div class="water-btns">
         <button class="w-btn w-minus" onclick="adjWater(-1)">−</button>
         <button class="w-btn w-plus" onclick="adjWater(1)">+</button>
       </div>
+      <div style="font-size:10px;color:var(--text3);text-align:center;margin-top:6px;line-height:1.4" id="w-remind"></div>
     </div>
   </div>
   <div class="section-title">Quick Actions</div>
@@ -659,12 +675,12 @@ function rHome(){
   document.getElementById('jc-ring').setAttribute('stroke-dasharray',`${ringFill.toFixed(1)} ${circ.toFixed(1)}`);
   document.getElementById('jc-pct').textContent=Math.round(Math.min(nightsDone/20,1)*100)+'%';
   // Morning steps
-  const ms=D.steps.sort((a,b)=>a.o-b.o).slice(0,5);
+  const ms=D.steps.sort((a,b)=>a.o-b.o);
   const done=getDone();
   const mdone=ms.filter(s=>done.includes(s.id)).length;
   const pct=ms.length?mdone/ms.length*100:0;
   document.getElementById('h-prog').style.width=pct+'%';
-  document.getElementById('h-prog-lbl').textContent=`${mdone}/${D.steps.length} steps done`;
+  document.getElementById('h-prog-lbl').textContent=`${mdone}/${D.steps.length} steps done · ${mdone===D.steps.length?'✓ All done!':'keep going ✨'}`;
   document.getElementById('h-steps').innerHTML=ms.map(s=>{
     const d=done.includes(s.id);
     return `<div class="step-item" onclick="togHStep('${s.id}')"><div class="step-circle ${d?'done':''}"></div><span class="step-name ${d?'done':''}">${s.name}</span></div>`;
@@ -701,15 +717,19 @@ function togHStep(id){
 }
 function logMH(n){D.mlogs.push({date:today(),n});const s=D.mstock.find(x=>x.n===n);if(s)s.u++;save();rHome();}
 function adjWater(d){
-  const t=today(),c=getW(),v=Math.max(0,Math.min(8,c+d));
+  const t=today(),c=getW(),v=Math.max(0,Math.min(12,c+d));
   const i=D.wlogs.findIndex(l=>l.date===t);
   if(i>=0)D.wlogs[i].g=v;else D.wlogs.push({date:t,g:v});
   save();updateW();
 }
 function updateW(){
-  const g=getW(),circ=2*Math.PI*28,dash=(g/8)*circ;
+  const g=getW(),circ=2*Math.PI*28,dash=(g/12)*circ;
   document.getElementById('w-ring').setAttribute('stroke-dasharray',`${dash} ${circ}`);
-  document.getElementById('w-num').textContent=`${g}/8`;
+  document.getElementById('w-num').textContent=`${g}/12`;
+  document.getElementById('w-liters').textContent=`${(g*0.25).toFixed(1)} / 3.0 L`;
+  const left=12-g;
+  const remind=g===0?'💧 Start drinking — aim every 2 hrs!':g<4?`💧 ${left} more glasses (${(left*.25).toFixed(1)}L) to go`:g<8?`🌊 Halfway there! ${left} glasses left`:g<12?`🏆 Almost done — ${left} more glass${left>1?'es':''}!`:`✅ 3L goal reached! Great job 🎉`;
+  document.getElementById('w-remind').textContent=remind;
 }
 
 // ══════════════════════════════════════════
@@ -878,6 +898,30 @@ function saveProd(){
 //  MASKS
 // ══════════════════════════════════════════
 function setMaskTab(t){maskTab=t;document.getElementById('m-tab-s').className='time-btn '+(t==='s'?'am-on':'');document.getElementById('m-tab-k').className='time-btn '+(t==='k'?'am-on':'');document.getElementById('m-sched').style.display=t==='s'?'block':'none';document.getElementById('m-stock').style.display=t==='k'?'block':'none';}
+function getMaskStartDate(){
+  // Week 1 Monday = this week's Monday minus (currentWeek-1)*7 days
+  const wk=getMW();
+  const now=new Date();now.setHours(0,0,0,0);
+  const dow=now.getDay();
+  const daysToMon=dow===0?6:dow-1;
+  const thisMon=new Date(now);thisMon.setDate(now.getDate()-daysToMon);
+  const w1Mon=new Date(thisMon);w1Mon.setDate(thisMon.getDate()-(wk-1)*7);
+  return w1Mon;
+}
+function getMaskScheduleWithDates(){
+  const w1Mon=getMaskStartDate();
+  return SCHED.map(s=>{
+    const wMon=new Date(w1Mon);wMon.setDate(w1Mon.getDate()+(s.w-1)*7);
+    const wed=new Date(wMon);wed.setDate(wMon.getDate()+2);
+    const sun=new Date(wMon);sun.setDate(wMon.getDate()+6);
+    return{...s,wedDate:wed,sunDate:sun,
+      wStart:wMon,wEnd:new Date(wMon.getTime()+6*864e5)};
+  });
+}
+function fmtD(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+function fmtDow(d){return d.toLocaleDateString('en-US',{weekday:'short'});}
+function dateKey(d){return d.toISOString().slice(0,10);}
+
 function rMasks(){
   const wk=getMW();
   document.getElementById('wk-badge').textContent=`Week ${wk}/12`;
@@ -885,9 +929,39 @@ function rMasks(){
   document.getElementById('mask-banner').innerHTML=tm
     ?`<div class="card" style="background:${MC[tm]||'#FFF0E8'};margin-bottom:12px"><div class="card-label">TODAY'S MASK (${day===3?'Wednesday':'Sunday'})</div><div style="font-size:18px;font-weight:700;margin:6px 0">${tm}</div>${!ml?`<button class="log-btn" onclick="logM('${esc(tm)}')">✓ Mark as Used</button>`:'<div class="log-done">✓ Done today!</div>'}</div>`
     :`<div class="card" style="text-align:center;margin-bottom:12px"><div style="font-size:28px">😴</div><div style="font-weight:700;margin-top:4px">No mask today</div><div style="font-size:12px;color:var(--text2);margin-top:3px">Mask days are Wednesday & Sunday</div></div>`;
-  document.getElementById('m-sched').innerHTML=`<div class="sched-header"><div style="width:40px;margin-right:10px">Wk</div><div style="flex:1;margin-right:6px">Wednesday</div><div style="flex:1">Sunday</div></div>
-    ${SCHED.map(s=>`<div class="sched-row ${s.w===wk?'cur':''} ${s.w<wk?'past':''}"><div class="wk-circle ${s.w===wk?'cur':''} ${s.w<wk?'past':''}">${s.w<wk?'✓':s.w}</div><div class="m-chip" style="background:${MC[s.wed]||'#eee'}">${s.wed}</div><div class="m-chip" style="background:${MC[s.sun]||'#eee'}">${s.sun}</div></div>`).join('')}
-    ${D.mlogs.length?'<div class="section-title" style="margin-top:14px">Recent Logs</div>'+[...D.mlogs].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,6).map(l=>`<div style="display:flex;align-items:center;background:var(--surface);border-radius:10px;padding:11px;margin-bottom:7px;box-shadow:var(--shadow-sm)"><div style="width:10px;height:10px;border-radius:50%;background:${MC[l.n]||'#E8909A'};margin-right:10px"></div><div style="flex:1"><div style="font-size:13px;font-weight:600">${l.n}</div><div style="font-size:11px;color:var(--text2)">${fmt(l.date)}</div></div><span style="color:var(--mint);font-size:14px">✓</span></div>`).join(''):''}`;
+
+  const schedWD=getMaskScheduleWithDates();
+  const todayStr=today();
+  const logSet=new Set(D.mlogs.map(l=>l.date));
+
+  document.getElementById('m-sched').innerHTML=schedWD.map(s=>{
+    const wedStr=dateKey(s.wedDate);const sunStr=dateKey(s.sunDate);
+    const isPast=s.w<wk;const isCur=s.w===wk;
+    const wRange=`${fmtD(s.wStart)} – ${fmtD(s.wEnd)}`;
+    const wedDone=logSet.has(wedStr);const sunDone=logSet.has(sunStr);
+    const wedToday=wedStr===todayStr;const sunToday=sunStr===todayStr;
+    function lineHtml(dow,maskName,dateStr,dStr,isDone,isToday,isMaskPast){
+      const dot=`<div class="ml-dot" style="background:${MC[maskName]||'#888'}"></div>`;
+      const tag=isDone?`<span class="ml-done-tag">✓ Done</span>`:isToday?`<span class="ml-today-tag">Today</span>`:isMaskPast?'<span class="ml-upcoming" style="opacity:.5">Past</span>':`<span class="ml-upcoming">upcoming</span>`;
+      const cls='mask-line'+(isCur?' cur':'')+(isPast?' past':'')+(isToday?' today-line':'');
+      return `<div class="${cls}">`
+        +`<div class="ml-dow">${dow}</div>`
+        +`<div class="ml-date">${dStr}</div>`
+        +dot
+        +`<div class="ml-name">${maskName}</div>`
+        +tag
+        +`</div>`;
+    }
+    const wedPast=isPast||(isCur&&new Date()>s.wedDate);
+    const sunPast=isPast||(isCur&&new Date()>s.sunDate);
+    return `<div class="mask-week-section">`
+      +`<div class="mask-week-hdr">Week ${s.w}${isCur?' · Current week':''} <span style="color:var(--text3);font-size:10px;font-weight:500;text-transform:none;letter-spacing:0;margin-left:auto">${wRange}</span></div>`
+      +lineHtml('Wed',s.wed,wedStr,fmtD(s.wedDate),wedDone,wedToday,wedPast&&!wedDone)
+      +lineHtml('Sun',s.sun,sunStr,fmtD(s.sunDate),sunDone,sunToday,sunPast&&!sunDone)
+      +`</div>`;
+  }).join('')
+  +(D.mlogs.length?'<div class="section-title" style="margin-top:14px">Recent Logs</div>'+[...D.mlogs].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,6).map(l=>`<div style="display:flex;align-items:center;background:var(--surface);border-radius:10px;padding:11px;margin-bottom:7px;box-shadow:var(--shadow-sm)"><div style="width:10px;height:10px;border-radius:50%;background:${MC[l.n]||'#E8909A'};margin-right:10px"></div><div style="flex:1"><div style="font-size:13px;font-weight:600">${l.n}</div><div style="font-size:11px;color:var(--text2)">${fmt(l.date)}</div></div><span style="color:var(--mint);font-size:14px">✓</span></div>`).join(''):'');
+
   document.getElementById('m-stock').innerHTML=`<div style="font-size:12px;color:var(--text2);text-align:center;margin-bottom:12px">Tap a mask to log one use</div>
     ${D.mstock.map(item=>{const rem=item.s-item.u,pct=rem/item.s;const bc=pct>.5?'var(--mint)':pct>.25?'var(--gold)':'var(--danger)';const tc=pct>.5?'#4A8A65':pct>.25?'#A07000':'#C04050';
     return `<div class="stock-card" onclick="manualM('${esc(item.n)}',${rem})"><div class="stock-top"><div class="s-dot" style="background:${MC[item.n]||'#eee'}"></div><div class="s-name">${item.n}</div><div class="s-rem" style="color:${tc}">${rem} left</div></div><div class="bar-track"><div class="bar-fill" style="width:${Math.max(0,pct)*100}%;background:${bc}"></div></div><div class="stock-meta"><span>Started: ${item.s}</span><span>Used: ${item.u}</span><span>Left: ${rem}</span></div></div>`;}).join('')}`;
