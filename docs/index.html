@@ -13,9 +13,23 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 .app{max-width:480px;margin:0 auto;min-height:100vh;background:#08061A;background-image:radial-gradient(ellipse 120% 45% at 50% 0%,rgba(184,148,240,.13) 0%,transparent 65%);position:relative;padding-bottom:90px}
 @media(min-width:520px){body{background:#040318}.app{box-shadow:0 0 0 1px rgba(184,148,240,.15),0 8px 80px rgba(0,0,0,.9)}.bottom-nav{border-radius:0 0 26px 26px}}
 .header{padding:52px 22px 16px;display:flex;justify-content:space-between;align-items:flex-start;position:sticky;top:0;z-index:40;background:rgba(8,6,26,.9);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(184,148,240,.12)}
-.header-greet{font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;letter-spacing:.3px;line-height:1.1;background:linear-gradient(110deg,#F0EAFF 0%,#D0B8FF 55%,#F0EAFF 90%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.header-date-line{font-size:12px;color:var(--text3);margin-top:4px;letter-spacing:.4px;font-weight:500}
+.header-greet{font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:600;font-style:italic;letter-spacing:.2px;line-height:1.1;background:linear-gradient(120deg,#E8DCFF 0%,#D0B8FF 40%,#B894F0 70%,#D0B8FF 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 18px rgba(184,148,240,.35))}
+.header-date-line{font-size:11px;color:var(--text3);margin-top:3px;letter-spacing:.6px;font-weight:600;text-transform:uppercase}
 .header-right{display:flex;align-items:center;gap:9px}
+.mode-btn{width:34px;height:34px;border-radius:50%;background:rgba(184,148,240,.1);border:1px solid rgba(184,148,240,.2);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .2s;flex-shrink:0}
+.mode-btn:active{transform:scale(.9)}
+/* ── LIGHT MODE ── */
+body.light{--bg:#F5F0FF;--bg2:#EDE6FF;--surface:#FFFFFF;--surface2:#F0EAFF;--text:#18103A;--text2:#6848A8;--text3:#9878C8;--border:#DDD0F5;--gold:#7840CC;--gold-l:rgba(120,64,204,.12);--gold-d:#6030B0;--accent:#8860D0;--mint:#2A8870;--rose:#C040A0;--rose-xl:rgba(192,64,160,.07);--shadow:0 4px 24px rgba(80,40,160,.12);--shadow-sm:0 2px 10px rgba(80,40,160,.1)}
+body.light html,body.light,body.light .app{background:#F5F0FF}
+body.light .app{background:#F5F0FF;background-image:radial-gradient(ellipse 120% 40% at 50% 0%,rgba(120,64,204,.1) 0%,transparent 65%)}
+body.light .header{background:rgba(245,240,255,.92);border-bottom-color:rgba(120,64,204,.12)}
+body.light .bottom-nav{background:rgba(245,240,255,.97);border-top-color:rgba(120,64,204,.12)}
+body.light .card{background:#FFFFFF;border-color:rgba(120,64,204,.08)}
+body.light .journey-card{background:linear-gradient(145deg,#5020B0,#3010808,#6030C8);box-shadow:0 16px 50px rgba(80,40,160,.3),0 0 0 1px rgba(120,64,204,.25)}
+body.light .header-greet{background:linear-gradient(120deg,#4010A0 0%,#7840CC 40%,#B060E8 70%,#7840CC 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 12px rgba(120,64,204,.2))}
+body.light .nav-btn{color:var(--text3)}
+body.light .streak-pill{background:rgba(120,64,204,.1);border-color:rgba(120,64,204,.2);color:var(--gold-d)}
+body.light .avatar{background:linear-gradient(135deg,#8860D0,#5020A8);color:#FFF}
 .streak-pill{display:inline-flex;align-items:center;gap:4px;background:rgba(184,148,240,.12);border-radius:var(--r-full);padding:7px 13px;font-size:13px;font-weight:700;color:var(--gold-d);border:1px solid rgba(184,148,240,.28)}
 .avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#B894F0,#7040C0);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#F0EAFF;box-shadow:0 3px 14px rgba(184,148,240,.45),0 0 0 2px rgba(184,148,240,.18);letter-spacing:0}
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(8,6,26,.97);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid rgba(184,148,240,.12);display:flex;z-index:50;padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -6px 30px rgba(0,0,0,.6)}
@@ -238,6 +252,7 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
     <div class="header-date-line" id="greet-date">Friday, July 17</div>
   </div>
   <div class="header-right">
+    <button class="mode-btn" id="mode-btn" onclick="toggleMode()" title="Toggle light/dark">🌙</button>
     <div class="streak-pill">🔥 <span id="streak-val">0</span></div>
     <div class="avatar">J</div>
   </div>
@@ -1122,7 +1137,18 @@ document.getElementById('step-inp').addEventListener('keydown',e=>{if(e.key==='E
 // ══════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════
-load();ensureMaskStart();
+function toggleMode(){
+  const isLight=document.body.classList.toggle('light');
+  document.getElementById('mode-btn').textContent=isLight?'☀️':'🌙';
+  try{localStorage.setItem('@SkinBloom:mode',isLight?'light':'dark');}catch{}
+}
+function initMode(){
+  try{const m=localStorage.getItem('@SkinBloom:mode');
+    if(m==='light'){document.body.classList.add('light');document.getElementById('mode-btn').textContent='☀️';}
+  }catch{}
+}
+
+load();ensureMaskStart();initMode();
 // Safety: ensure critical arrays are always valid
 if(!Array.isArray(D.steps)||D.steps.length===0)D.steps=JSON.parse(JSON.stringify(MORNING_STEPS));
 if(!Array.isArray(D.logs))D.logs=[];
