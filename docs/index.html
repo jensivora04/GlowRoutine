@@ -1018,6 +1018,7 @@ function editStock(e,n){
   item.u=item.s-val;
   save();rMasks();
 }
+function logMDate(n,dateStr){
   if(D.mlogs.some(l=>l.date===dateStr&&l.n===n))return;
   D.mlogs.push({date:dateStr,n});
   const s=D.mstock.find(x=>x.n===n);if(s)s.u++;
