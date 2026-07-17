@@ -734,16 +734,21 @@ function rHome(){
   document.getElementById('greet-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
   const sk=streak();
   document.getElementById('streak-val').textContent=sk;
-  // Journey card
+  // Journey card — ring shows today's daily progress (morning + night combined)
   const nightsDone=Math.max(0,D.nightNum-1);
   document.getElementById('jc-night-n').textContent=D.nightNum;
-  document.getElementById('jc-sub').textContent=nightsDone===0?'Start your skin ritual tonight':'nights completed so far';
   document.getElementById('jc-streak').textContent=sk;
   document.getElementById('jc-nights').textContent=nightsDone;
   document.getElementById('jc-products').textContent=D.products.length;
-  const circ=2*Math.PI*34;const ringFill=Math.min(nightsDone/20,1)*circ;
+  // Calculate today's progress: morning steps done + night steps done / total possible
+  const amDone=getDone().length;const amTotal=D.steps.length||7;
+  const nmDone=D.nightDone.length;const nmTotal=(resolveSteps(getNightRoutine(D.nightNum))).length||5;
+  const todayTotal=amTotal+nmTotal;const todayDone=amDone+nmDone;
+  const dayPct=todayTotal?Math.round(todayDone/todayTotal*100):0;
+  const circ=2*Math.PI*34;const ringFill=(dayPct/100)*circ;
   document.getElementById('jc-ring').setAttribute('stroke-dasharray',`${ringFill.toFixed(1)} ${circ.toFixed(1)}`);
-  document.getElementById('jc-pct').textContent=Math.round(Math.min(nightsDone/20,1)*100)+'%';
+  document.getElementById('jc-pct').textContent=dayPct+'%';
+  document.getElementById('jc-sub').textContent=dayPct===0?'Start your routine today':dayPct===100?'✓ Full day done! 🌟':`${todayDone}/${todayTotal} steps today`;
   // Routine card — morning or night depending on time of day
   if(tod==='AM'){
     document.getElementById('h-routine-title').textContent='☀️ Morning Routine';
