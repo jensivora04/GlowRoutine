@@ -36,6 +36,7 @@ export const defaultAppData: AppData = {
     { name: 'Abib Gummy Heartleaf', start: 5, used: 0 },
   ],
   maskLogs: [],
+  waterLogs: [],
 };
 
 export async function loadData(): Promise<AppData> {

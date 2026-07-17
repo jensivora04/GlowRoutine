@@ -53,6 +53,11 @@ export interface MaskLog {
   maskName: string;
 }
 
+export interface WaterLog {
+  date: string; // YYYY-MM-DD
+  glasses: number;
+}
+
 export interface AppData {
   routineSteps: RoutineStep[];
   dailyLogs: DailyLog[];
@@ -63,4 +68,5 @@ export interface AppData {
   lastCompletedDate: string | null;
   maskStock: MaskStock[];
   maskLogs: MaskLog[];
+  waterLogs: WaterLog[];
 }
