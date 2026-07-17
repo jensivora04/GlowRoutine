@@ -268,6 +268,8 @@ body.light .p-sb{border-color:rgba(120,64,204,.2);background:rgba(120,64,204,.06
 .btn-p{background:linear-gradient(135deg,var(--gold),#7040C0);color:#F0EAFF;border:none;border-radius:14px;padding:14px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;width:100%;box-shadow:0 4px 20px rgba(184,148,240,.35);transition:transform .15s,box-shadow .15s}
 .btn-p:active{transform:scale(.98);box-shadow:0 2px 10px rgba(212,168,69,.22)}
 .btn-s{background:rgba(255,255,255,.06);color:var(--text2);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;width:100%}
+.btn-danger{background:rgba(200,60,60,.12);color:#E06060;border:1px solid rgba(200,60,60,.25);border-radius:14px;padding:12px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;width:100%;transition:all .15s}
+.btn-danger:active{background:rgba(200,60,60,.22);transform:scale(.98)}
 .modal-actions{display:flex;gap:10px;margin-top:6px}
 .modal-actions .btn-p,.modal-actions .btn-s{flex:1;padding:13px}
 .log-btn{background:linear-gradient(135deg,var(--gold),#7040C0);color:#F0EAFF;border:none;border-radius:9px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 2px 8px rgba(184,148,240,.3)}
@@ -524,6 +526,7 @@ body.light .p-sb{border-color:rgba(120,64,204,.2);background:rgba(120,64,204,.06
   <div class="f-label">Notes</div><textarea class="f-input" id="p-notes" rows="3" placeholder="Usage tips..."></textarea>
   <div class="f-label">📦 Stock / Quantity</div><input class="f-input" id="p-stock" type="number" min="0" placeholder="How many do you have? (optional)">
   <div class="modal-actions"><button class="btn-s" onclick="closeM('mod-prod')">Cancel</button><button class="btn-p" onclick="saveProd()">Save</button></div>
+  <div id="mod-prod-del" style="display:none;margin-top:10px"><button class="btn-danger" onclick="delPModal()">🗑 Delete Product</button></div>
 </div></div>
 
 <div class="modal-overlay" id="mod-j"><div class="modal-sheet">
@@ -1019,8 +1022,9 @@ function rProds(){
   }).join('');
 }
 function sCat(c){selCat=c;rProds();}
-function openAddProd(){editPId=null;document.getElementById('mod-prod-ttl').textContent='Add Product';document.getElementById('ep-id').value='';document.getElementById('p-name').value='';document.getElementById('p-brand').value='';document.getElementById('p-notes').value='';document.getElementById('p-stock').value='';catF='Cleanser';rCatPick();openM('mod-prod');}
-function editP(id){const p=D.products.find(x=>x.id===id);if(!p)return;editPId=id;document.getElementById('mod-prod-ttl').textContent='Edit Product';document.getElementById('ep-id').value=id;document.getElementById('p-name').value=p.name;document.getElementById('p-brand').value=p.brand||'';document.getElementById('p-notes').value=p.notes||'';document.getElementById('p-stock').value=p.stock!=null?p.stock:'';catF=p.cat;rCatPick();openM('mod-prod');}
+function openAddProd(){editPId=null;document.getElementById('mod-prod-ttl').textContent='Add Product';document.getElementById('ep-id').value='';document.getElementById('p-name').value='';document.getElementById('p-brand').value='';document.getElementById('p-notes').value='';document.getElementById('p-stock').value='';document.getElementById('mod-prod-del').style.display='none';catF='Cleanser';rCatPick();openM('mod-prod');}
+function editP(id){const p=D.products.find(x=>x.id===id);if(!p)return;editPId=id;document.getElementById('mod-prod-ttl').textContent='Edit Product';document.getElementById('ep-id').value=id;document.getElementById('p-name').value=p.name;document.getElementById('p-brand').value=p.brand||'';document.getElementById('p-notes').value=p.notes||'';document.getElementById('p-stock').value=p.stock!=null?p.stock:'';document.getElementById('mod-prod-del').style.display='block';catF=p.cat;rCatPick();openM('mod-prod');}
+function delPModal(){if(!editPId)return;if(confirm('Delete this product?')){D.products=D.products.filter(p=>p.id!==editPId);save();closeM('mod-prod');rProds();}}
 function delP(e,id){e.preventDefault();if(confirm('Delete this product?')){D.products=D.products.filter(p=>p.id!==id);save();rProds();}}
 function rCatPick(){document.getElementById('p-cat-pick').innerHTML=CATS.map(c=>`<button class="chip ${catF===c?'on':''}" onclick="sPC('${c}')">${c}</button>`).join('');}
 function sPC(c){catF=c;rCatPick();}
