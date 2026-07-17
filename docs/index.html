@@ -596,7 +596,7 @@ function defD(){return{
   products:[],journals:[],
   mstock:JSON.parse(JSON.stringify(DEF_STOCK)),mlogs:[],wlogs:[],
   streak:0,lastDone:null,
-  maskStartDate:today(),  // set on first use so Week 1 aligns to correct Wed
+  maskStartDate:new Date().toISOString().slice(0,10),
   rem:{amOn:false,pmOn:false,amT:'7:00 AM',pmT:'9:00 PM'},
 };}
 
