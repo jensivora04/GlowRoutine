@@ -171,6 +171,7 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 .s-dot{width:12px;height:12px;border-radius:50%;margin-right:9px}
 .s-name{flex:1;font-size:14px;font-weight:700}
 .s-rem{font-size:14px;font-weight:800}
+.s-edit-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:3px 7px;font-size:12px;cursor:pointer;line-height:1;color:var(--text2)}
 .bar-track{height:7px;background:rgba(255,255,255,.07);border-radius:var(--r-full);overflow:hidden;margin-bottom:6px}
 .bar-fill{height:100%;border-radius:var(--r-full);transition:width .5s cubic-bezier(.4,0,.2,1)}
 .stock-meta{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);font-weight:600}
@@ -998,11 +999,21 @@ function rMasks(){
   }).join('')
   +(D.mlogs.length?'<div class="section-title" style="margin-top:14px">Recent Logs</div>'+[...D.mlogs].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,6).map(l=>`<div style="display:flex;align-items:center;background:var(--surface);border-radius:10px;padding:11px;margin-bottom:7px;box-shadow:var(--shadow-sm)"><div style="width:10px;height:10px;border-radius:50%;background:${MC[l.n]||'#E8909A'};margin-right:10px"></div><div style="flex:1"><div style="font-size:13px;font-weight:600">${l.n}</div><div style="font-size:11px;color:var(--text2)">${fmt(l.date)}</div></div><span style="color:var(--mint);font-size:14px">✓</span></div>`).join(''):'');
 
-  document.getElementById('m-stock').innerHTML=`<div style="font-size:12px;color:var(--text2);text-align:center;margin-bottom:12px">Tap a mask to log one use</div>
+  document.getElementById('m-stock').innerHTML=`<div style="font-size:12px;color:var(--text2);text-align:center;margin-bottom:12px">Tap to log one use · long-press to edit stock</div>
     ${D.mstock.map(item=>{const rem=item.s-item.u,pct=rem/item.s;const bc=pct>.5?'var(--mint)':pct>.25?'var(--gold)':'var(--danger)';const tc=pct>.5?'#4A8A65':pct>.25?'#A07000':'#C04050';
-    return `<div class="stock-card" onclick="manualM('${esc(item.n)}',${rem})"><div class="stock-top"><div class="s-dot" style="background:${MC[item.n]||'#eee'}"></div><div class="s-name">${item.n}</div><div class="s-rem" style="color:${tc}">${rem} left</div></div><div class="bar-track"><div class="bar-fill" style="width:${Math.max(0,pct)*100}%;background:${bc}"></div></div><div class="stock-meta"><span>Started: ${item.s}</span><span>Used: ${item.u}</span><span>Left: ${rem}</span></div></div>`;}).join('')}`;
+    return `<div class="stock-card" onclick="manualM('${esc(item.n)}',${rem})" oncontextmenu="editStock(event,'${esc(item.n)}')"><div class="stock-top"><div class="s-dot" style="background:${MC[item.n]||'#eee'}"></div><div class="s-name">${item.n}</div><div style="display:flex;align-items:center;gap:8px"><div class="s-rem" style="color:${tc}">${rem} left</div><button class="s-edit-btn" onclick="event.stopPropagation();editStock(event,'${esc(item.n)}')">✏️</button></div></div><div class="bar-track"><div class="bar-fill" style="width:${Math.max(0,pct)*100}%;background:${bc}"></div></div><div class="stock-meta"><span>Started: ${item.s}</span><span>Used: ${item.u}</span><span>Left: ${rem}</span></div></div>`;}).join('')}`;
 }
-function logMDate(n,dateStr){
+function editStock(e,n){
+  e.preventDefault();
+  const item=D.mstock.find(x=>x.n===n);if(!item)return;
+  const rem=item.s-item.u;
+  const newRem=prompt(`${n}\n\nCurrent remaining: ${rem}\nEnter correct remaining count:`,rem);
+  if(newRem===null)return;
+  const val=parseInt(newRem);
+  if(isNaN(val)||val<0||val>item.s){alert('Invalid number. Must be 0 – '+item.s);return;}
+  item.u=item.s-val;
+  save();rMasks();
+}
   if(D.mlogs.some(l=>l.date===dateStr&&l.n===n))return;
   D.mlogs.push({date:dateStr,n});
   const s=D.mstock.find(x=>x.n===n);if(s)s.u++;
