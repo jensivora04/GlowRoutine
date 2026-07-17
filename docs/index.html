@@ -156,6 +156,8 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 .ml-done-tag{font-size:10px;font-weight:700;color:#5ABA80;background:rgba(90,186,128,.12);padding:3px 8px;border-radius:20px;white-space:nowrap}
 .ml-today-tag{font-size:10px;font-weight:700;color:var(--gold-d);background:rgba(212,168,69,.12);padding:3px 8px;border-radius:20px;white-space:nowrap}
 .ml-upcoming{font-size:10px;color:var(--text3);font-weight:600;white-space:nowrap}
+.ml-log-btn{font-size:10px;font-weight:700;color:var(--gold-d);background:rgba(212,168,69,.15);border:1px solid rgba(212,168,69,.3);padding:4px 10px;border-radius:20px;cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .15s}
+.ml-log-btn:active{transform:scale(.95);background:rgba(212,168,69,.28)}
 .sched-row{display:flex;align-items:center;background:var(--surface);border-radius:14px;padding:10px;margin-bottom:8px;box-shadow:0 2px 12px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.04)}
 .sched-row.cur{border:1px solid rgba(212,168,69,.4);box-shadow:0 4px 20px rgba(212,168,69,.1)}
 .sched-row.past{opacity:.38}
@@ -947,24 +949,33 @@ function dateKey(d){return d.toISOString().slice(0,10);}
 function rMasks(){
   const wk=getMW();
   document.getElementById('wk-badge').textContent=`Week ${wk}/12`;
-  const tm=getTM(),ml=D.mlogs.some(l=>l.date===today()),day=new Date().getDay();
+  const tm=getTM(),ml=D.mlogs.some(l=>l.date===today()&&l.n===tm),day=new Date().getDay();
   document.getElementById('mask-banner').innerHTML=tm
-    ?`<div class="card" style="background:${MC[tm]||'#FFF0E8'};margin-bottom:12px"><div class="card-label">TODAY'S MASK (${day===3?'Wednesday':'Sunday'})</div><div style="font-size:18px;font-weight:700;margin:6px 0">${tm}</div>${!ml?`<button class="log-btn" onclick="logM('${esc(tm)}')">✓ Mark as Used</button>`:'<div class="log-done">✓ Done today!</div>'}</div>`
+    ?`<div class="card" style="background:${MC[tm]||'#FFF0E8'};margin-bottom:12px"><div class="card-label">TODAY'S MASK (${day===3?'Wednesday':'Sunday'})</div><div style="font-size:18px;font-weight:700;margin:6px 0">${tm}</div>${!ml?`<button class="log-btn" onclick="logMDate('${esc(tm)}','${today()}')">✓ Mark as Used</button>`:'<div class="log-done">✓ Done today!</div>'}</div>`
     :`<div class="card" style="text-align:center;margin-bottom:12px"><div style="font-size:28px">😴</div><div style="font-weight:700;margin-top:4px">No mask today</div><div style="font-size:12px;color:var(--text2);margin-top:3px">Mask days are Wednesday & Sunday</div></div>`;
 
   const schedWD=getMaskScheduleWithDates();
   const todayStr=today();
-  const logSet=new Set(D.mlogs.map(l=>l.date));
+  // key = "YYYY-MM-DD|maskName" for exact match
+  const logSet=new Set(D.mlogs.map(l=>l.date+'|'+l.n));
 
   document.getElementById('m-sched').innerHTML=schedWD.map(s=>{
     const wedStr=dateKey(s.wedDate);const sunStr=dateKey(s.sunDate);
     const isPast=s.w<wk;const isCur=s.w===wk;
     const wRange=`${fmtD(s.wStart)} – ${fmtD(s.wEnd)}`;
-    const wedDone=logSet.has(wedStr);const sunDone=logSet.has(sunStr);
+    const wedDone=logSet.has(wedStr+'|'+s.wed);
+    const sunDone=logSet.has(sunStr+'|'+s.sun);
     const wedToday=wedStr===todayStr;const sunToday=sunStr===todayStr;
+    const wedPast=isPast||(isCur&&new Date()>s.wedDate);
+    const sunPast=isPast||(isCur&&new Date()>s.sunDate);
     function lineHtml(dow,maskName,dateStr,dStr,isDone,isToday,isMaskPast){
       const dot=`<div class="ml-dot" style="background:${MC[maskName]||'#888'}"></div>`;
-      const tag=isDone?`<span class="ml-done-tag">✓ Done</span>`:isToday?`<span class="ml-today-tag">Today</span>`:isMaskPast?'<span class="ml-upcoming" style="opacity:.5">Past</span>':`<span class="ml-upcoming">upcoming</span>`;
+      const canLog=!isDone&&(isToday||isMaskPast);
+      const tag=isDone
+        ?`<span class="ml-done-tag">✓ Done</span>`
+        :canLog
+          ?`<button class="ml-log-btn" onclick="logMDate('${esc(maskName)}','${dateStr}')">Mark Done</button>`
+          :`<span class="ml-upcoming">upcoming</span>`;
       const cls='mask-line'+(isCur?' cur':'')+(isPast?' past':'')+(isToday?' today-line':'');
       return `<div class="${cls}">`
         +`<div class="ml-dow">${dow}</div>`
@@ -974,8 +985,6 @@ function rMasks(){
         +tag
         +`</div>`;
     }
-    const wedPast=isPast||(isCur&&new Date()>s.wedDate);
-    const sunPast=isPast||(isCur&&new Date()>s.sunDate);
     return `<div class="mask-week-section">`
       +`<div class="mask-week-hdr">Week ${s.w}${isCur?' · Current week':''} <span style="color:var(--text3);font-size:10px;font-weight:500;text-transform:none;letter-spacing:0;margin-left:auto">${wRange}</span></div>`
       +lineHtml('Wed',s.wed,wedStr,fmtD(s.wedDate),wedDone,wedToday,wedPast&&!wedDone)
@@ -988,8 +997,14 @@ function rMasks(){
     ${D.mstock.map(item=>{const rem=item.s-item.u,pct=rem/item.s;const bc=pct>.5?'var(--mint)':pct>.25?'var(--gold)':'var(--danger)';const tc=pct>.5?'#4A8A65':pct>.25?'#A07000':'#C04050';
     return `<div class="stock-card" onclick="manualM('${esc(item.n)}',${rem})"><div class="stock-top"><div class="s-dot" style="background:${MC[item.n]||'#eee'}"></div><div class="s-name">${item.n}</div><div class="s-rem" style="color:${tc}">${rem} left</div></div><div class="bar-track"><div class="bar-fill" style="width:${Math.max(0,pct)*100}%;background:${bc}"></div></div><div class="stock-meta"><span>Started: ${item.s}</span><span>Used: ${item.u}</span><span>Left: ${rem}</span></div></div>`;}).join('')}`;
 }
-function logM(n){D.mlogs.push({date:today(),n});const s=D.mstock.find(x=>x.n===n);if(s)s.u++;save();rMasks();}
-function manualM(n,rem){if(rem<=0){alert('Out of stock!');return;}if(confirm(`Log one use of ${n}?`)){D.mlogs.push({date:today(),n});const s=D.mstock.find(x=>x.n===n);if(s)s.u++;save();rMasks();}}
+function logMDate(n,dateStr){
+  if(D.mlogs.some(l=>l.date===dateStr&&l.n===n))return;
+  D.mlogs.push({date:dateStr,n});
+  const s=D.mstock.find(x=>x.n===n);if(s)s.u++;
+  save();rMasks();rHome();
+}
+function logM(n){logMDate(n,today());}
+function manualM(n,rem){if(rem<=0){alert('Out of stock!');return;}if(confirm(`Log one use of ${n}?`)){logMDate(n,today());}}
 
 // ══════════════════════════════════════════
 //  JOURNAL
