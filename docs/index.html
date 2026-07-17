@@ -147,13 +147,26 @@ body.light .avatar{background:linear-gradient(135deg,#8860D0,#5020A8);color:#FFF
 .scroll-x::-webkit-scrollbar{display:none}
 .chip{padding:7px 14px;border-radius:var(--r-full);border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.05);font-family:inherit;font-size:12px;font-weight:700;color:var(--text2);white-space:nowrap;cursor:pointer;transition:all .18s}
 .chip.on{background:linear-gradient(135deg,var(--gold),#7040C0);color:#F0EAFF;border-color:transparent;box-shadow:0 2px 8px rgba(184,148,240,.3)}
-.product-card{display:flex;align-items:center;background:var(--surface);border-radius:16px;padding:14px;margin-bottom:9px;box-shadow:0 2px 14px rgba(0,0,0,.4);cursor:pointer;border:1px solid rgba(255,255,255,.05)}
+.product-card{display:flex;align-items:center;background:var(--surface);border-radius:16px;padding:14px;margin-bottom:9px;box-shadow:0 2px 14px rgba(0,0,0,.4);cursor:pointer;border:1px solid rgba(255,255,255,.05);transition:border .2s}
+.product-card.low-stock{border-color:rgba(220,150,40,.4);box-shadow:0 2px 14px rgba(0,0,0,.4),0 0 0 1px rgba(220,150,40,.2)}
+.product-card.out-of-stock{border-color:rgba(200,80,80,.35);opacity:.7}
 .p-dot{width:10px;height:10px;border-radius:50%;margin-right:12px;flex-shrink:0}
-.p-info{flex:1}
+.p-info{flex:1;min-width:0}
 .p-name{font-size:14px;font-weight:700}
 .p-brand{font-size:12px;color:var(--text2);margin-top:2px}
 .p-notes{font-size:11px;color:var(--text3);margin-top:3px}
 .cat-tag{font-size:10px;font-weight:700;border-radius:8px;padding:3px 8px;letter-spacing:.2px}
+.p-stock-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;margin-left:10px;flex-shrink:0}
+.p-stock-num{font-size:18px;font-weight:800;color:var(--text);line-height:1}
+.p-stock-lbl{font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.4px;text-transform:uppercase}
+.p-stock-num.low{color:#E8A020}
+.p-stock-num.out{color:#D05050}
+.p-stock-btns{display:flex;gap:4px}
+.p-sb{width:26px;height:26px;border-radius:50%;border:1px solid rgba(184,148,240,.2);background:rgba(184,148,240,.08);color:var(--text2);font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;padding:0}
+.p-sb:active{transform:scale(.88)}
+.prod-low-banner{background:rgba(220,150,40,.1);border:1px solid rgba(220,150,40,.25);border-radius:14px;padding:12px 16px;margin-bottom:14px;font-size:13px;font-weight:600;color:#C8900A}
+body.light .product-card{box-shadow:0 2px 10px rgba(80,40,160,.08)}
+body.light .p-sb{border-color:rgba(120,64,204,.2);background:rgba(120,64,204,.06)}
 /* MASKS */
 .sched-header{display:flex;padding-bottom:8px;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px}
 .mask-week-section{margin-bottom:16px}
@@ -482,6 +495,7 @@ body.light .avatar{background:linear-gradient(135deg,#8860D0,#5020A8);color:#FFF
   <div class="f-label">Brand</div><input class="f-input" id="p-brand" placeholder="e.g. The Ordinary">
   <div class="f-label">Category</div><div class="scroll-x" id="p-cat-pick" style="margin-bottom:12px"></div>
   <div class="f-label">Notes</div><textarea class="f-input" id="p-notes" rows="3" placeholder="Usage tips..."></textarea>
+  <div class="f-label">📦 Stock / Quantity</div><input class="f-input" id="p-stock" type="number" min="0" placeholder="How many do you have? (optional)">
   <div class="modal-actions"><button class="btn-s" onclick="closeM('mod-prod')">Cancel</button><button class="btn-p" onclick="saveProd()">Save</button></div>
 </div></div>
 
@@ -950,24 +964,53 @@ function rProds(){
   const fil=D.products.filter(p=>(!q||(p.name||'').toLowerCase().includes(q)||(p.brand||'').toLowerCase().includes(q))&&(selCat==='All'||p.cat===selCat));
   const el=document.getElementById('prod-list');
   if(!fil.length){el.innerHTML=`<div class="empty"><div class="empty-e">🧴</div><div class="empty-t">No products yet</div><div class="empty-s">Tap "+ Add" to start your catalog</div></div>`;return;}
-  el.innerHTML=fil.map(p=>`<div class="product-card" onclick="editP('${p.id}')" oncontextmenu="delP(event,'${p.id}')">
-    <div class="p-dot" style="background:${CC[p.cat]||'#D0D0D0'}"></div>
-    <div class="p-info"><div class="p-name">${p.name}</div><div class="p-brand">${p.brand||'No brand'}</div>${p.notes?`<div class="p-notes">${p.notes}</div>`:''}</div>
-    <span class="cat-tag" style="background:${CC[p.cat]||'#D0D0D0'}">${p.cat}</span>
-  </div>`).join('');
+  const lowItems=fil.filter(p=>p.stock!=null&&p.stock<=2&&p.stock>0);
+  const outItems=fil.filter(p=>p.stock===0);
+  let banner='';
+  if(outItems.length)banner+=`<div class="prod-low-banner">🚨 Out of stock: ${outItems.map(p=>p.name).join(', ')}</div>`;
+  else if(lowItems.length)banner+=`<div class="prod-low-banner">⚠️ Running low: ${lowItems.map(p=>p.name).join(', ')}</div>`;
+  el.innerHTML=banner+fil.map(p=>{
+    const hasStock=p.stock!=null;
+    const cls=hasStock?(p.stock===0?'out-of-stock':p.stock<=2?'low-stock':''):'';
+    const numCls=hasStock?(p.stock===0?'out':p.stock<=2?'low':''):'';
+    const stockHtml=hasStock?`
+      <div class="p-stock-wrap" onclick="event.stopPropagation()">
+        <div class="p-stock-num ${numCls}">${p.stock}</div>
+        <div class="p-stock-lbl">in stock</div>
+        <div class="p-stock-btns">
+          <button class="p-sb" onclick="adjPS('${p.id}',-1)">−</button>
+          <button class="p-sb" onclick="adjPS('${p.id}',1)">+</button>
+        </div>
+      </div>`
+    :`<button class="p-sb" onclick="adjPS('${p.id}',1);event.stopPropagation()" style="margin-left:8px;width:30px;height:30px;font-size:14px" title="Track stock">📦</button>`;
+    return `<div class="product-card ${cls}" onclick="editP('${p.id}')">
+      <div class="p-dot" style="background:${CC[p.cat]||'#D0D0D0'}"></div>
+      <div class="p-info"><div class="p-name">${p.name}</div><div class="p-brand">${p.brand||'No brand'}</div>${p.notes?`<div class="p-notes">${p.notes}</div>`:''}</div>
+      <span class="cat-tag" style="background:${CC[p.cat]||'#D0D0D0'}">${p.cat}</span>
+      ${stockHtml}
+    </div>`;
+  }).join('');
 }
 function sCat(c){selCat=c;rProds();}
-function openAddProd(){editPId=null;document.getElementById('mod-prod-ttl').textContent='Add Product';document.getElementById('ep-id').value='';document.getElementById('p-name').value='';document.getElementById('p-brand').value='';document.getElementById('p-notes').value='';catF='Cleanser';rCatPick();openM('mod-prod');}
-function editP(id){const p=D.products.find(x=>x.id===id);if(!p)return;editPId=id;document.getElementById('mod-prod-ttl').textContent='Edit Product';document.getElementById('ep-id').value=id;document.getElementById('p-name').value=p.name;document.getElementById('p-brand').value=p.brand||'';document.getElementById('p-notes').value=p.notes||'';catF=p.cat;rCatPick();openM('mod-prod');}
+function openAddProd(){editPId=null;document.getElementById('mod-prod-ttl').textContent='Add Product';document.getElementById('ep-id').value='';document.getElementById('p-name').value='';document.getElementById('p-brand').value='';document.getElementById('p-notes').value='';document.getElementById('p-stock').value='';catF='Cleanser';rCatPick();openM('mod-prod');}
+function editP(id){const p=D.products.find(x=>x.id===id);if(!p)return;editPId=id;document.getElementById('mod-prod-ttl').textContent='Edit Product';document.getElementById('ep-id').value=id;document.getElementById('p-name').value=p.name;document.getElementById('p-brand').value=p.brand||'';document.getElementById('p-notes').value=p.notes||'';document.getElementById('p-stock').value=p.stock!=null?p.stock:'';catF=p.cat;rCatPick();openM('mod-prod');}
 function delP(e,id){e.preventDefault();if(confirm('Delete this product?')){D.products=D.products.filter(p=>p.id!==id);save();rProds();}}
 function rCatPick(){document.getElementById('p-cat-pick').innerHTML=CATS.map(c=>`<button class="chip ${catF===c?'on':''}" onclick="sPC('${c}')">${c}</button>`).join('');}
 function sPC(c){catF=c;rCatPick();}
 function saveProd(){
   const n=document.getElementById('p-name').value.trim();if(!n)return;
-  const o={name:n,brand:document.getElementById('p-brand').value.trim(),cat:catF,notes:document.getElementById('p-notes').value.trim(),addedAt:today()};
+  const sv=document.getElementById('p-stock').value.trim();
+  const stock=sv===''?null:Math.max(0,parseInt(sv)||0);
+  const o={name:n,brand:document.getElementById('p-brand').value.trim(),cat:catF,notes:document.getElementById('p-notes').value.trim(),addedAt:today(),stock};
   if(editPId){const i=D.products.findIndex(p=>p.id===editPId);if(i>=0)D.products[i]={...D.products[i],...o};}
   else D.products.push({id:uid(),...o});
   save();closeM('mod-prod');rProds();
+}
+function adjPS(id,d){
+  const p=D.products.find(x=>x.id===id);if(!p)return;
+  if(p.stock==null)p.stock=d>0?1:0;
+  else p.stock=Math.max(0,p.stock+d);
+  save();rProds();
 }
 
 // ══════════════════════════════════════════
