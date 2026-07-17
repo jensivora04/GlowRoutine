@@ -12,10 +12,9 @@
 html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0E0A0C;color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 .app{max-width:480px;margin:0 auto;min-height:100vh;background:#0E0A0C;background-image:radial-gradient(ellipse 120% 45% at 50% 0%,rgba(212,168,69,.11) 0%,transparent 65%);position:relative;padding-bottom:90px}
 @media(min-width:520px){body{background:#060306}.app{box-shadow:0 0 0 1px rgba(212,168,69,.12),0 8px 80px rgba(0,0,0,.9)}.bottom-nav{border-radius:0 0 26px 26px}}
-.header{padding:54px 22px 14px;display:flex;justify-content:space-between;align-items:flex-start;position:sticky;top:0;z-index:40;background:rgba(14,10,12,.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(212,168,69,.1)}
-.header h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;font-weight:600;letter-spacing:.8px;line-height:1.1;background:linear-gradient(120deg,#F5EDE8 0%,var(--gold-d) 55%,#F5EDE8 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.header h1 .heart{-webkit-text-fill-color:var(--gold)}
-.header p{font-size:12px;color:var(--text3);margin-top:3px;letter-spacing:.4px}
+.header{padding:52px 22px 16px;display:flex;justify-content:space-between;align-items:flex-start;position:sticky;top:0;z-index:40;background:rgba(14,10,12,.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(212,168,69,.1)}
+.header-greet{font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;letter-spacing:.3px;line-height:1.1;background:linear-gradient(110deg,#F5EDE8 0%,#ECC860 55%,#F5EDE8 90%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.header-date-line{font-size:12px;color:var(--text3);margin-top:4px;letter-spacing:.4px;font-weight:500}
 .header-right{display:flex;align-items:center;gap:9px}
 .streak-pill{display:inline-flex;align-items:center;gap:4px;background:rgba(212,168,69,.12);border-radius:var(--r-full);padding:7px 13px;font-size:13px;font-weight:700;color:var(--gold-d);border:1px solid rgba(212,168,69,.25)}
 .avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#A07020);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#0E0A0C;box-shadow:0 3px 14px rgba(212,168,69,.45),0 0 0 2px rgba(212,168,69,.15);letter-spacing:0}
@@ -217,8 +216,8 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
 
 <header class="header">
   <div>
-    <h1>GlowRoutine <span class="heart">♡</span></h1>
-    <p>for your best skin days ✦</p>
+    <div class="header-greet" id="greet-txt">Good Evening, J 🌙</div>
+    <div class="header-date-line" id="greet-date">Friday, July 17</div>
   </div>
   <div class="header-right">
     <div class="streak-pill">🔥 <span id="streak-val">0</span></div>
@@ -235,9 +234,6 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
     <div class="hero-blob2"></div>
     <div class="hero-ring"></div>
     <div style="position:relative;z-index:1">
-      <div class="hero-greeting" id="greet-txt">Good Morning, J 🌸</div>
-      <div class="hero-date" id="greet-date"></div>
-      <div class="hero-divider"></div>
       <div class="hero-q">How's your skin today?</div>
       <div class="mood-picker" id="mood-picker"></div>
       <div class="mood-response" id="mood-response"></div>
@@ -396,10 +392,9 @@ html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;b
     </div>
   </div>
   <div class="card" style="text-align:center;padding:32px;background:linear-gradient(145deg,#1E1428,#201408);border:1px solid rgba(212,168,69,.18)">
-    <div style="font-size:44px;margin-bottom:10px">✦</div>
-    <div style="font-size:20px;font-weight:800;color:var(--gold-d);letter-spacing:-.4px">GlowRoutine</div>
-    <div style="font-size:13px;color:var(--text2);margin-top:6px">Your daily skincare companion</div>
-    <div style="font-size:11px;color:var(--text3);margin-top:4px">v2.0.0</div>
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:600;letter-spacing:1px;background:linear-gradient(120deg,#F5EDE8,#ECC860,#F5EDE8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px">GlowRoutine</div>
+    <div style="font-size:12px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;font-weight:600">your daily skin ritual</div>
+    <div style="font-size:11px;color:var(--text3);margin-top:12px;opacity:.5">v2.0.0</div>
   </div>
 </div>
 
