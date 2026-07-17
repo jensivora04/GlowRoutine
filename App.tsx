@@ -13,6 +13,7 @@ import ProductsScreen from './src/screens/ProductsScreen';
 import JournalScreen from './src/screens/JournalScreen';
 import ProgressScreen from './src/screens/ProgressScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
+import MasksScreen from './src/screens/MasksScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -77,6 +78,15 @@ export default function App() {
             }}
           >
             {() => <ProductsScreen data={data} onUpdate={handleUpdate} />}
+          </Tab.Screen>
+
+          <Tab.Screen
+            name="Masks"
+            options={{
+              tabBarIcon: ({ focused }) => <TabIcon emoji="🎭" focused={focused} />,
+            }}
+          >
+            {() => <MasksScreen data={data} onUpdate={handleUpdate} />}
           </Tab.Screen>
 
           <Tab.Screen

@@ -36,6 +36,23 @@ export interface ProgressPhoto {
   note: string;
 }
 
+export interface MaskStock {
+  name: string;
+  start: number;
+  used: number;
+}
+
+export interface MaskWeek {
+  week: number;
+  wednesday: string;
+  sunday: string;
+}
+
+export interface MaskLog {
+  date: string; // YYYY-MM-DD
+  maskName: string;
+}
+
 export interface AppData {
   routineSteps: RoutineStep[];
   dailyLogs: DailyLog[];
@@ -44,4 +61,6 @@ export interface AppData {
   progressPhotos: ProgressPhoto[];
   streak: number;
   lastCompletedDate: string | null;
+  maskStock: MaskStock[];
+  maskLogs: MaskLog[];
 }

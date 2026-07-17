@@ -24,6 +24,18 @@ export const defaultAppData: AppData = {
   progressPhotos: [],
   streak: 0,
   lastCompletedDate: null,
+  maskStock: [
+    { name: 'Medicube', start: 13, used: 0 },
+    { name: 'Biodance', start: 24, used: 0 },
+    { name: 'Mediheal Madecassoside', start: 22, used: 0 },
+    { name: 'Mediheal Vita C', start: 8, used: 0 },
+    { name: 'Mediheal Collagen', start: 11, used: 0 },
+    { name: 'PRMR Mega Shot', start: 5, used: 0 },
+    { name: 'Goodal Vita C', start: 7, used: 0 },
+    { name: 'Abib Gummy Madecassoside', start: 12, used: 0 },
+    { name: 'Abib Gummy Heartleaf', start: 5, used: 0 },
+  ],
+  maskLogs: [],
 };
 
 export async function loadData(): Promise<AppData> {
