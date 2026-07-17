@@ -1,37 +1,723 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>GlowRoutine</title>
-    <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
-    <style id="expo-reset">
-      /* These styles make the body full-height */
-      html,
-      body {
-        height: 100%;
-      }
-      /* These styles disable body scrolling if you are using <ScrollView> */
-      body {
-        overflow: hidden;
-      }
-      /* These styles make the root element full-height */
-      #root {
-        display: flex;
-        height: 100%;
-        flex: 1;
-      }
-    </style>
-  <link rel="icon" href="/GlowRoutine/favicon.ico"/></head>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>GlowRoutine ♡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#FDF6F4; --bg2:#FEF0F0; --surface:#FFFFFF;
+  --rose:#E8737E; --rose-l:#FCE8EC; --rose-xl:#FEF4F6; --rose-d:#C45560;
+  --accent:#C8A8D8; --accent-l:#EEE4F8;
+  --peach:#F4A898; --peach-l:#FCE8E4;
+  --mint:#6BAE85; --mint-l:#DFF2E8;
+  --gold:#F0C878; --gold-l:#FEF4DC;
+  --border:#F0E0E4; --text:#2D1820; --text2:#8C6870; --text3:#C4A8AE;
+  --danger:#E07070; --card1:#FFF5F7; --card2:#FFF8EC; --card3:#F0EEF8; --card4:#EEF8F2;
+  --shadow:0 4px 18px rgba(200,80,100,.09); --shadow-sm:0 2px 8px rgba(200,80,100,.07);
+  --r:16px; --r-sm:10px; --r-full:999px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);position:relative;padding-bottom:82px}
+@media(min-width:520px){body{background:#EDE0E4}.app{box-shadow:0 0 50px rgba(0,0,0,.1)}.bottom-nav{border-radius:0 0 20px 20px}}
 
-  <body>
-    <!-- Use static rendering with Expo Router to support running without JavaScript. -->
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <!-- The root element for your Expo app. -->
-    <div id="root"></div>
-  <script src="/GlowRoutine/_expo/static/js/web/index-ddd87d6ddebdc644446c4a5866a8847a.js" defer></script>
+/* HEADER */
+.header{padding:52px 20px 10px;display:flex;justify-content:space-between;align-items:flex-start;position:sticky;top:0;z-index:40;background:var(--bg)}
+.header h1{font-size:26px;font-weight:800;letter-spacing:-.5px;line-height:1.1}
+.header h1 .heart{color:var(--rose)}
+.header p{font-size:12px;color:var(--text2);margin-top:2px}
+.header-right{display:flex;align-items:center;gap:8px}
+.streak-pill{display:inline-flex;align-items:center;gap:4px;background:var(--rose-l);border-radius:var(--r-full);padding:6px 12px;font-size:13px;font-weight:700;color:var(--rose-d)}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid var(--border);display:flex;z-index:50;padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -4px 16px rgba(200,80,100,.07)}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 2px 10px;border:none;background:transparent;cursor:pointer;gap:3px;color:var(--text3);font-family:inherit;font-size:10px;font-weight:600;transition:color .15s}
+.nav-btn .nav-icon{font-size:20px;line-height:1;transition:transform .15s}
+.nav-btn.active{color:var(--rose)}
+.nav-btn.active .nav-icon{transform:scale(1.15)}
+
+/* PANES */
+.pane{display:none;padding:6px 20px 0;animation:fu .25s ease}
+.pane.active{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* CARDS */
+.card{background:var(--surface);border-radius:var(--r);padding:18px;margin-bottom:14px;box-shadow:var(--shadow-sm)}
+.card-label{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px}
+.card-title{font-size:15px;font-weight:700}
+.card-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.view-all{font-size:13px;font-weight:600;color:var(--rose);background:none;border:none;cursor:pointer;font-family:inherit}
+
+/* HOME */
+.greeting{padding:4px 20px 12px}
+.greeting h2{font-size:22px;font-weight:700}
+.greeting p{font-size:13px;color:var(--text2);margin-top:2px}
+.mood-card{background:var(--rose-xl);display:flex;align-items:center}
+.mood-card .mood-body{flex:1}
+.mood-big{font-size:20px;font-weight:700;margin-bottom:4px}
+.mood-sub{font-size:13px;color:var(--text2)}
+.mood-art{font-size:52px;margin-left:12px}
+.prog-bar-wrap{height:6px;background:var(--border);border-radius:var(--r-full);overflow:hidden;margin-bottom:6px}
+.prog-bar{height:100%;background:var(--rose);border-radius:var(--r-full);transition:width .4s}
+.prog-label{font-size:11px;color:var(--text2);margin-bottom:14px}
+.step-list{display:flex;flex-direction:column;gap:10px}
+.step-item{display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none}
+.step-circle{width:24px;height:24px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.step-circle.done{background:var(--rose);border-color:var(--rose)}
+.step-circle.done::after{content:'✓';font-size:12px;color:#fff;font-weight:700}
+.step-name{font-size:14px;font-weight:500}
+.step-name.done{color:var(--text3);text-decoration:line-through}
+.row-cards{display:flex;gap:12px;margin-bottom:14px}
+.half-card{flex:1;background:var(--surface);border-radius:var(--r);padding:14px;box-shadow:var(--shadow-sm)}
+.mask-h-card{background:var(--card2)}
+.mask-name-sm{font-size:13px;font-weight:700;margin-bottom:3px;line-height:1.3}
+.mask-sub{font-size:11px;color:var(--text2);margin-bottom:8px}
+.water-card{background:var(--card3);display:flex;flex-direction:column;align-items:center}
+.water-ring-wrap{position:relative;width:72px;height:72px;margin:6px 0}
+.water-ring-wrap svg{display:block}
+.water-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.water-num{font-size:15px;font-weight:700;line-height:1}
+.water-unit{font-size:9px;color:var(--text2);font-weight:600}
+.water-btns{display:flex;gap:8px;margin-top:6px}
+.w-btn{width:30px;height:30px;border-radius:50%;border:none;cursor:pointer;font-size:17px;font-weight:700;font-family:inherit;display:flex;align-items:center;justify-content:center}
+.w-minus{background:var(--border);color:var(--text2)}
+.w-plus{background:var(--rose);color:#fff}
+.section-title{font-size:14px;font-weight:700;margin-bottom:10px;margin-top:2px}
+.quick-actions{display:flex;justify-content:space-between;margin-bottom:14px}
+.quick-btn{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;background:none;border:none;font-family:inherit}
+.quick-icon{width:50px;height:50px;border-radius:14px;background:var(--surface);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;font-size:22px}
+.quick-label{font-size:10px;color:var(--text2);font-weight:600}
+.stats-strip{background:var(--surface);border-radius:var(--r);padding:14px;display:flex;justify-content:space-around;box-shadow:var(--shadow-sm);margin-bottom:14px}
+.stat-item{display:flex;flex-direction:column;align-items:center;gap:2px}
+.stat-emoji{font-size:18px}
+.stat-val{font-size:17px;font-weight:700}
+.stat-lbl{font-size:10px;color:var(--text2);text-align:center}
+
+/* PAGE HEADER */
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.page-title{font-size:20px;font-weight:800}
+.add-btn{background:var(--rose);color:#fff;border:none;border-radius:10px;padding:7px 14px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
+
+/* TIME TOGGLE */
+.time-toggle{display:flex;background:var(--border);border-radius:12px;padding:3px;margin-bottom:14px}
+.time-btn{flex:1;padding:9px;border:none;background:transparent;border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;color:var(--text2);transition:all .15s}
+.time-btn.am-on{background:var(--gold);color:#7A5000}
+.time-btn.pm-on{background:var(--accent);color:#5A3880}
+
+/* ROUTINE STEPS */
+.r-step{display:flex;align-items:center;background:var(--surface);border-radius:12px;padding:13px;margin-bottom:8px;box-shadow:var(--shadow-sm);cursor:pointer;transition:background .15s}
+.r-step.done{background:var(--rose-l);opacity:.9}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--text2);margin-right:14px;flex-shrink:0}
+.step-num.done{background:var(--rose);color:#fff}
+.step-num.done::after{content:'✓'}
+.step-txt{flex:1;font-size:15px;font-weight:500}
+.step-txt.done{color:var(--rose-d);text-decoration:line-through}
+.time-tag{font-size:10px;font-weight:700;border-radius:6px;padding:3px 7px}
+.tag-am{background:#FFF0C0;color:#A07000}
+.tag-pm{background:var(--accent-l);color:#7050A0}
+.add-step-btn{border:1.5px dashed var(--rose);border-radius:12px;padding:13px;text-align:center;width:100%;background:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;color:var(--rose);margin-top:4px}
+.celebration{background:var(--rose-l);border-radius:var(--r);padding:18px;text-align:center;margin-bottom:14px}
+.cel-emoji{font-size:32px}
+.cel-text{font-size:15px;font-weight:700;color:var(--rose-d);margin-top:6px}
+
+/* PRODUCTS */
+.search-bar{width:100%;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;font-family:inherit;font-size:14px;color:var(--text);margin-bottom:10px;outline:none}
+.search-bar:focus{border-color:var(--rose)}
+.scroll-x{display:flex;overflow-x:auto;gap:7px;padding-bottom:4px;scrollbar-width:none;margin-bottom:12px}
+.scroll-x::-webkit-scrollbar{display:none}
+.chip{padding:6px 13px;border-radius:var(--r-full);border:none;background:var(--border);font-family:inherit;font-size:12px;font-weight:600;color:var(--text2);white-space:nowrap;cursor:pointer;transition:all .15s}
+.chip.on{background:var(--rose);color:#fff}
+.product-card{display:flex;align-items:center;background:var(--surface);border-radius:12px;padding:13px;margin-bottom:8px;box-shadow:var(--shadow-sm);cursor:pointer}
+.p-dot{width:10px;height:10px;border-radius:50%;margin-right:12px;flex-shrink:0}
+.p-info{flex:1}
+.p-name{font-size:14px;font-weight:600}
+.p-brand{font-size:12px;color:var(--text2);margin-top:2px}
+.p-notes{font-size:11px;color:var(--text3);margin-top:3px}
+.cat-tag{font-size:10px;font-weight:600;border-radius:6px;padding:3px 8px}
+
+/* MASKS */
+.sched-header{display:flex;padding-bottom:8px;font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.6px}
+.sched-row{display:flex;align-items:center;background:var(--surface);border-radius:12px;padding:9px;margin-bottom:7px;box-shadow:var(--shadow-sm)}
+.sched-row.cur{border:2px solid var(--rose)}
+.sched-row.past{opacity:.5}
+.wk-circle{width:30px;height:30px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);margin-right:10px;flex-shrink:0}
+.wk-circle.cur{background:var(--rose);color:#fff}
+.wk-circle.past{background:var(--mint);color:#fff;font-size:11px}
+.m-chip{flex:1;border-radius:7px;padding:5px 7px;font-size:11px;font-weight:600;line-height:1.3}
+.m-chip:first-of-type{margin-right:6px}
+.stock-card{background:var(--surface);border-radius:12px;padding:13px;margin-bottom:8px;box-shadow:var(--shadow-sm);cursor:pointer}
+.stock-top{display:flex;align-items:center;margin-bottom:8px}
+.s-dot{width:12px;height:12px;border-radius:50%;margin-right:9px}
+.s-name{flex:1;font-size:14px;font-weight:600}
+.s-rem{font-size:14px;font-weight:700}
+.bar-track{height:7px;background:var(--border);border-radius:var(--r-full);overflow:hidden;margin-bottom:6px}
+.bar-fill{height:100%;border-radius:var(--r-full);transition:width .4s}
+.stock-meta{display:flex;justify-content:space-between;font-size:10px;color:var(--text2)}
+
+/* JOURNAL */
+.mood-picker{display:flex;gap:8px;margin-bottom:14px}
+.mood-opt{flex:1;padding:9px 4px;border-radius:10px;border:1.5px solid var(--border);display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;background:none;font-family:inherit;transition:all .15s}
+.mood-opt.on{border-color:var(--rose);background:var(--rose-xl)}
+.mood-opt-e{font-size:20px}
+.mood-opt-l{font-size:10px;font-weight:600;color:var(--text2)}
+.concern-grid{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.c-chip{padding:6px 12px;border-radius:var(--r-full);border:none;background:var(--border);font-family:inherit;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .15s}
+.c-chip.on{background:var(--rose-l);color:var(--rose-d)}
+.j-card{background:var(--surface);border-radius:12px;padding:13px;margin-bottom:8px;box-shadow:var(--shadow-sm);cursor:pointer}
+.j-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.mood-badge{display:flex;align-items:center;gap:5px;border-radius:var(--r-full);padding:4px 10px;font-size:12px;font-weight:700}
+.j-date{font-size:12px;color:var(--text2)}
+.j-notes{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:7px}
+.tag-row{display:flex;flex-wrap:wrap;gap:5px}
+.c-tag{background:var(--rose-l);border-radius:var(--r-full);padding:2px 9px;font-size:10px;color:var(--rose-d);font-weight:600}
+
+/* SETTINGS */
+.s-stats{display:flex;flex-wrap:wrap;gap:8px}
+.s-stat{flex:1;min-width:28%;background:var(--bg2);border-radius:12px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.rem-card{background:var(--surface);border-radius:12px;padding:14px;margin-bottom:8px;box-shadow:var(--shadow-sm)}
+.rem-row{display:flex;align-items:center}
+.rem-e{font-size:22px;margin-right:12px}
+.rem-info{flex:1}
+.rem-title{font-size:14px;font-weight:600}
+.rem-sub{font-size:12px;color:var(--text2);margin-top:2px}
+.toggle{width:44px;height:26px;border-radius:13px;border:none;background:var(--border);cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--rose)}
+.toggle::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.toggle.on::after{transform:translateX(18px)}
+.t-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+
+/* EMPTY */
+.empty{display:flex;flex-direction:column;align-items:center;padding:48px 0}
+.empty-e{font-size:48px;margin-bottom:12px}
+.empty-t{font-size:16px;font-weight:700}
+.empty-s{font-size:13px;color:var(--text2);margin-top:4px;text-align:center}
+
+/* BUTTONS */
+.btn-p{background:var(--rose);color:#fff;border:none;border-radius:12px;padding:13px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;width:100%;transition:opacity .15s}
+.btn-s{background:var(--border);color:var(--text2);border:none;border-radius:12px;padding:13px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;width:100%}
+.modal-actions{display:flex;gap:8px;margin-top:6px}
+.modal-actions .btn-p,.modal-actions .btn-s{flex:1;padding:12px}
+.log-btn{background:var(--rose);color:#fff;border:none;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}
+.log-done{font-size:12px;color:var(--mint);font-weight:600;margin-top:4px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-sheet{background:#fff;border-radius:24px 24px 0 0;padding:24px;padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));width:100%;max-width:480px;max-height:90vh;overflow-y:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.modal-overlay.open .modal-sheet{transform:none}
+.modal-title{font-size:18px;font-weight:800;margin-bottom:16px}
+.f-label{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+.f-input{width:100%;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;color:var(--text);margin-bottom:12px;outline:none;resize:none}
+.f-input:focus{border-color:var(--rose)}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- HEADER -->
+<header class="header">
+  <div>
+    <h1>GlowRoutine <span class="heart">♡</span></h1>
+    <p>for your best skin days ✦</p>
+  </div>
+  <div class="header-right">
+    <div class="streak-pill">🔥 <span id="streak-val">0</span></div>
+    <div class="avatar">J</div>
+  </div>
+</header>
+
+<main>
+
+<!-- HOME -->
+<div id="pane-home" class="pane active">
+  <div class="greeting">
+    <h2 id="greet-txt">Good Morning, J 🌸</h2>
+    <p id="greet-date"></p>
+  </div>
+  <div class="card mood-card">
+    <div class="mood-body">
+      <div class="card-label">TODAY'S MOOD</div>
+      <div class="mood-big" id="mood-ttl">Glowing ✨</div>
+      <div class="mood-sub" id="mood-sub">Your skin is thriving!</div>
+    </div>
+    <div class="mood-art" id="mood-art">☁️</div>
+  </div>
+  <div class="card">
+    <div class="card-row">
+      <div class="card-title">Today's Routine</div>
+      <button class="view-all" onclick="go('routine')">View all →</button>
+    </div>
+    <div class="prog-bar-wrap"><div class="prog-bar" id="h-prog" style="width:0%"></div></div>
+    <div class="prog-label" id="h-prog-lbl">0/5 steps done</div>
+    <div class="step-list" id="h-steps"></div>
+  </div>
+  <div class="row-cards">
+    <div class="half-card mask-h-card">
+      <div class="card-label">TODAY'S MASK</div>
+      <div id="h-mask"></div>
+    </div>
+    <div class="half-card water-card">
+      <div class="card-label">WATER 💧</div>
+      <div class="water-ring-wrap">
+        <svg width="72" height="72" viewBox="0 0 72 72" style="transform:rotate(-90deg)">
+          <circle cx="36" cy="36" r="28" fill="none" stroke="var(--border)" stroke-width="7"/>
+          <circle id="w-ring" cx="36" cy="36" r="28" fill="none" stroke="var(--rose)" stroke-width="7" stroke-dasharray="0 176" stroke-linecap="round"/>
+        </svg>
+        <div class="water-label">
+          <span class="water-num" id="w-num">0/8</span>
+          <span class="water-unit">glasses</span>
+        </div>
+      </div>
+      <div class="water-btns">
+        <button class="w-btn w-minus" onclick="adjWater(-1)">−</button>
+        <button class="w-btn w-plus" onclick="adjWater(1)">+</button>
+      </div>
+    </div>
+  </div>
+  <div class="section-title">Quick Actions</div>
+  <div class="quick-actions">
+    <button class="quick-btn" onclick="go('routine')"><div class="quick-icon">✨</div><span class="quick-label">Routine</span></button>
+    <button class="quick-btn" onclick="go('products')"><div class="quick-icon">🧴</div><span class="quick-label">Products</span></button>
+    <button class="quick-btn" onclick="go('masks')"><div class="quick-icon">🎭</div><span class="quick-label">Masks</span></button>
+    <button class="quick-btn" onclick="go('journal')"><div class="quick-icon">📓</div><span class="quick-label">Journal</span></button>
+    <button class="quick-btn" onclick="go('settings')"><div class="quick-icon">⚙️</div><span class="quick-label">Settings</span></button>
+  </div>
+  <div class="stats-strip" id="h-stats"></div>
+</div>
+
+<!-- ROUTINE -->
+<div id="pane-routine" class="pane">
+  <div class="page-header">
+    <div><div class="page-title">My Routine</div><div id="r-date" style="font-size:12px;color:var(--text2);margin-top:2px"></div></div>
+    <div class="streak-pill">🔥 <span id="r-streak">0</span></div>
+  </div>
+  <div class="time-toggle">
+    <button class="time-btn am-on" id="btn-am" onclick="setTOD('AM')">☀️ Morning</button>
+    <button class="time-btn" id="btn-pm" onclick="setTOD('PM')">🌙 Evening</button>
+  </div>
+  <div id="r-list"></div>
+  <button class="add-step-btn" onclick="openAddStep()">+ Add Step</button>
+  <div id="r-cel" style="display:none;margin-top:10px"></div>
+</div>
+
+<!-- PRODUCTS -->
+<div id="pane-products" class="pane">
+  <div class="page-header">
+    <div class="page-title">My Products</div>
+    <button class="add-btn" onclick="openAddProd()">+ Add</button>
+  </div>
+  <input type="text" class="search-bar" id="prod-search" placeholder="Search products..." oninput="renderProds()">
+  <div class="scroll-x" id="prod-filters"></div>
+  <div id="prod-list"></div>
+</div>
+
+<!-- MASKS -->
+<div id="pane-masks" class="pane">
+  <div class="page-header">
+    <div class="page-title">Face Masks 🎭</div>
+    <div id="wk-badge" style="background:var(--accent-l);border-radius:var(--r-full);padding:6px 12px;font-size:12px;font-weight:700;color:var(--accent)">Week 1/12</div>
+  </div>
+  <div id="mask-banner"></div>
+  <div class="time-toggle">
+    <button class="time-btn am-on" id="m-tab-s" onclick="setMaskTab('s')">📅 Schedule</button>
+    <button class="time-btn" id="m-tab-k" onclick="setMaskTab('k')">📦 Stock</button>
+  </div>
+  <div id="m-sched"></div>
+  <div id="m-stock" style="display:none"></div>
+</div>
+
+<!-- JOURNAL -->
+<div id="pane-journal" class="pane">
+  <div class="page-header">
+    <div class="page-title">Skin Journal</div>
+    <button class="add-btn" onclick="openAddJ()">+ Entry</button>
+  </div>
+  <div id="j-list"></div>
+</div>
+
+<!-- SETTINGS -->
+<div id="pane-settings" class="pane">
+  <div class="page-title" style="margin-bottom:16px">Settings</div>
+  <div class="card">
+    <div class="card-title" style="margin-bottom:14px">My Stats</div>
+    <div class="s-stats" id="s-stats"></div>
+  </div>
+  <div class="card">
+    <div class="card-title" style="margin-bottom:14px">Daily Reminders</div>
+    <div class="rem-card">
+      <div class="rem-row"><span class="rem-e">☀️</span><div class="rem-info"><div class="rem-title">Morning Routine</div><div class="rem-sub">AM reminder</div></div><button class="toggle" id="tog-am" onclick="togRem('am')"></button></div>
+      <div class="t-chips" id="am-chips"></div>
+    </div>
+    <div class="rem-card">
+      <div class="rem-row"><span class="rem-e">🌙</span><div class="rem-info"><div class="rem-title">Evening Routine</div><div class="rem-sub">PM reminder</div></div><button class="toggle" id="tog-pm" onclick="togRem('pm')"></button></div>
+      <div class="t-chips" id="pm-chips"></div>
+    </div>
+  </div>
+  <div class="card" style="text-align:center;padding:28px">
+    <div style="font-size:44px;margin-bottom:10px">🌸</div>
+    <div style="font-size:20px;font-weight:800">GlowRoutine</div>
+    <div style="font-size:13px;color:var(--text2);margin-top:6px">Your daily skincare companion</div>
+    <div style="font-size:11px;color:var(--text3);margin-top:4px">v1.0.0</div>
+  </div>
+</div>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-t="home" onclick="go('home')"><span class="nav-icon">🏠</span>Home</button>
+  <button class="nav-btn" data-t="routine" onclick="go('routine')"><span class="nav-icon">✨</span>Routine</button>
+  <button class="nav-btn" data-t="products" onclick="go('products')"><span class="nav-icon">🧴</span>Products</button>
+  <button class="nav-btn" data-t="masks" onclick="go('masks')"><span class="nav-icon">🎭</span>Masks</button>
+  <button class="nav-btn" data-t="journal" onclick="go('journal')"><span class="nav-icon">📓</span>Journal</button>
+  <button class="nav-btn" data-t="settings" onclick="go('settings')"><span class="nav-icon">⚙️</span>Settings</button>
+</nav>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="mod-step"><div class="modal-sheet">
+  <div class="modal-title" id="mod-step-ttl">Add Step</div>
+  <div class="f-label">Step Name</div>
+  <input class="f-input" id="step-inp" placeholder="e.g. Eye Cream...">
+  <div class="modal-actions"><button class="btn-s" onclick="closeM('mod-step')">Cancel</button><button class="btn-p" onclick="saveStep()">Add</button></div>
+</div></div>
+
+<div class="modal-overlay" id="mod-prod"><div class="modal-sheet">
+  <div class="modal-title" id="mod-prod-ttl">Add Product</div>
+  <input type="hidden" id="ep-id">
+  <div class="f-label">Product Name *</div><input class="f-input" id="p-name" placeholder="e.g. Vitamin C Serum">
+  <div class="f-label">Brand</div><input class="f-input" id="p-brand" placeholder="e.g. The Ordinary">
+  <div class="f-label">Category</div><div class="scroll-x" id="p-cat-pick" style="margin-bottom:12px"></div>
+  <div class="f-label">Notes</div><textarea class="f-input" id="p-notes" rows="3" placeholder="Usage tips..."></textarea>
+  <div class="modal-actions"><button class="btn-s" onclick="closeM('mod-prod')">Cancel</button><button class="btn-p" onclick="saveProd()">Save</button></div>
+</div></div>
+
+<div class="modal-overlay" id="mod-j"><div class="modal-sheet">
+  <div class="modal-title" id="mod-j-ttl">New Entry</div>
+  <input type="hidden" id="ej-id">
+  <div class="f-label">How is your skin today?</div><div class="mood-picker" id="j-mood-pick"></div>
+  <div class="f-label">Concerns</div><div class="concern-grid" id="j-concern-pick"></div>
+  <div class="f-label">Notes</div><textarea class="f-input" id="j-notes" rows="3" placeholder="How does your skin feel?"></textarea>
+  <div class="modal-actions"><button class="btn-s" onclick="closeM('mod-j')">Cancel</button><button class="btn-p" onclick="saveJ()">Save</button></div>
+</div></div>
+
+<script>
+// ── DATA ──────────────────────────────────
+const KEY='@GlowRoutine:v2';
+const DEF_STEPS=[
+  {id:'s1',name:'Cleanser',t:'AM',o:1},{id:'s2',name:'Toner',t:'AM',o:2},
+  {id:'s3',name:'Serum',t:'AM',o:3},{id:'s4',name:'Moisturizer',t:'AM',o:4},
+  {id:'s5',name:'Sunscreen',t:'AM',o:5},{id:'s6',name:'Makeup Remover',t:'PM',o:1},
+  {id:'s7',name:'Cleanser',t:'PM',o:2},{id:'s8',name:'Toner',t:'PM',o:3},
+  {id:'s9',name:'Serum',t:'PM',o:4},{id:'s10',name:'Night Cream',t:'PM',o:5},
+];
+const DEF_STOCK=[
+  {n:'Medicube',s:13,u:0},{n:'Biodance',s:24,u:0},{n:'Mediheal Madecassoside',s:22,u:0},
+  {n:'Mediheal Vita C',s:8,u:0},{n:'Mediheal Collagen',s:11,u:0},{n:'PRMR Mega Shot',s:5,u:0},
+  {n:'Goodal Vita C',s:7,u:0},{n:'Abib Gummy Madecassoside',s:12,u:0},{n:'Abib Gummy Heartleaf',s:5,u:0},
+];
+const SCHED=[
+  {w:1,wed:'Mediheal Madecassoside',sun:'Biodance'},{w:2,wed:'Goodal Vita C',sun:'Abib Gummy Madecassoside'},
+  {w:3,wed:'Mediheal Collagen',sun:'Medicube'},{w:4,wed:'PRMR Mega Shot',sun:'Mediheal Vita C'},
+  {w:5,wed:'Biodance',sun:'Abib Gummy Heartleaf'},{w:6,wed:'Mediheal Madecassoside',sun:'Goodal Vita C'},
+  {w:7,wed:'Medicube',sun:'Mediheal Collagen'},{w:8,wed:'Biodance',sun:'PRMR Mega Shot'},
+  {w:9,wed:'Abib Gummy Madecassoside',sun:'Mediheal Vita C'},{w:10,wed:'Mediheal Madecassoside',sun:'Biodance'},
+  {w:11,wed:'Goodal Vita C',sun:'Medicube'},{w:12,wed:'Mediheal Collagen',sun:'Abib Gummy Heartleaf'},
+];
+const MC={
+  'Mediheal Madecassoside':'#D4E8C4','Mediheal Vita C':'#FFF0C0','Mediheal Collagen':'#D4EEF5',
+  'Biodance':'#F5D4E8','Medicube':'#E8D4F5','PRMR Mega Shot':'#FFE0B0','Goodal Vita C':'#FFF5C0',
+  'Abib Gummy Madecassoside':'#D4F5E8','Abib Gummy Heartleaf':'#C8F0D8',
+};
+const CC={Cleanser:'#A8D8B9',Toner:'#B8D4E8',Serum:'#D4B8E8',Moisturizer:'#F0D4B0',
+  Sunscreen:'#F0E0B0','Eye Cream':'#F0B8C8',Exfoliant:'#C8E0C0',Mask:'#E0C0D8',Oil:'#E8D4A0',Other:'#D0D0D0'};
+const CATS=['Cleanser','Toner','Serum','Moisturizer','Sunscreen','Eye Cream','Exfoliant','Mask','Oil','Other'];
+const MOODS=[{k:'great',e:'😊',l:'Great',c:'#6BAE85'},{k:'good',e:'🙂',l:'Good',c:'#90C8A8'},
+  {k:'okay',e:'😐',l:'Okay',c:'#F0C080'},{k:'bad',e:'😔',l:'Bad',c:'#E07070'}];
+const MM={great:{t:'Glowing ✨',s:'Your skin is thriving!',a:'☁️'},good:{t:'Looking Good 🙂',s:'Keep up the routine!',a:'🌸'},
+  okay:{t:'Doing Okay',s:'Hydrate & rest up 💧',a:'🌿'},bad:{t:'Needs TLC',s:'Be gentle with yourself',a:'🌙'}};
+const CONCERNS=['Dryness','Oiliness','Breakout','Redness','Sensitivity','Dullness','Dark Spots','Fine Lines','Puffiness','Uneven Tone'];
+const AM_T=['6:00 AM','6:30 AM','7:00 AM','7:30 AM','8:00 AM','8:30 AM','9:00 AM'];
+const PM_T=['8:00 PM','8:30 PM','9:00 PM','9:30 PM','10:00 PM','10:30 PM','11:00 PM'];
+
+function defD(){return{steps:JSON.parse(JSON.stringify(DEF_STEPS)),logs:[],products:[],journal:[],
+  mstock:JSON.parse(JSON.stringify(DEF_STOCK)),mlogs:[],wlogs:[],streak:0,lastDone:null,
+  rem:{amOn:false,pmOn:false,amT:'7:00 AM',pmT:'9:00 PM'}};}
+
+let D=defD();
+function load(){try{const s=localStorage.getItem(KEY);if(s)D={...defD(),...JSON.parse(s)};}catch{}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(D));}catch{}}
+
+// ── UTILS ─────────────────────────────────
+const today=()=>new Date().toISOString().split('T')[0];
+const fmt=d=>new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const esc=s=>(s||'').replace(/'/g,"\\'");
+const getTL=()=>D.logs.find(l=>l.date===today());
+const getC=()=>getTL()?.done??[];
+const getW=()=>D.wlogs.find(l=>l.date===today())?.g??0;
+const getMW=()=>Math.min(Math.floor(new Set(D.mlogs.map(l=>l.date)).size/2)+1,12);
+const getTM=()=>{const d=new Date().getDay(),w=getMW(),s=SCHED[w-1];return d===3?s?.wed:d===0?s?.sun:null;};
+function streak(){
+  const t=today(),y=new Date();y.setDate(y.getDate()-1);
+  const ys=y.toISOString().split('T')[0],last=D.lastDone;
+  if(!last||(last!==t&&last!==ys))return 0;
+  let n=0;const c=new Date(last+'T00:00:00');
+  for(let i=0;i<365;i++){const ds=c.toISOString().split('T')[0];if(D.logs.find(l=>l.date===ds)){n++;c.setDate(c.getDate()-1);}else break;}
+  return n;
+}
+function checkDone(){
+  const c=getC();
+  if(D.steps.every(s=>c.includes(s.id))&&D.lastDone!==today()){D.lastDone=today();}
+}
+
+// ── NAV ───────────────────────────────────
+let cur='home',tod=new Date().getHours()<17?'AM':'PM',maskTab='s',selCat='All',editPId=null,editJId=null,jMood='good',jCons=[],catF='Cleanser';
+
+function go(tab){
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('pane-'+tab)?.classList.add('active');
+  document.querySelector(`.nav-btn[data-t="${tab}"]`)?.classList.add('active');
+  cur=tab;render(tab);
+}
+function render(tab){
+  if(tab==='home')rHome();
+  else if(tab==='routine')rRoutine();
+  else if(tab==='products')rProds();
+  else if(tab==='masks')rMasks();
+  else if(tab==='journal')rJ();
+  else if(tab==='settings')rSettings();
+}
+
+// ── HOME ──────────────────────────────────
+function rHome(){
+  const h=new Date().getHours();
+  const g=h<12?'Good Morning':h<17?'Good Afternoon':'Good Evening';
+  const e=h<12?'🌸':h<17?'☀️':'🌙';
+  document.getElementById('greet-txt').textContent=`${g}, J ${e}`;
+  document.getElementById('greet-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  const sk=streak();
+  document.getElementById('streak-val').textContent=sk;
+  const lj=D.journal.find(e=>e.date===today());
+  const mk=lj?.mood??'great';const msg=MM[mk]??MM.great;
+  document.getElementById('mood-ttl').textContent=msg.t;
+  document.getElementById('mood-sub').textContent=msg.s;
+  document.getElementById('mood-art').textContent=msg.a;
+  const tod2=h<17?'AM':'PM';
+  const steps=D.steps.filter(s=>s.t===tod2).sort((a,b)=>a.o-b.o).slice(0,5);
+  const done=steps.filter(s=>getC().includes(s.id)).length;
+  const pct=steps.length?done/steps.length*100:0;
+  document.getElementById('h-prog').style.width=pct+'%';
+  document.getElementById('h-prog-lbl').textContent=`${done}/${steps.length} steps done · ${tod2==='AM'?'☀️ Morning':'🌙 Evening'}`;
+  document.getElementById('h-steps').innerHTML=steps.map(s=>{
+    const d=getC().includes(s.id);
+    return `<div class="step-item" onclick="togHStep('${s.id}')"><div class="step-circle ${d?'done':''}"></div><span class="step-name ${d?'done':''}">${s.name}</span></div>`;
+  }).join('');
+  const tm=getTM();const ml=D.mlogs.some(l=>l.date===today());
+  document.getElementById('h-mask').innerHTML=tm
+    ?`<div class="mask-name-sm">${tm}</div><div class="mask-sub">Sheet Mask · ~18 min</div>${!ml?`<button class="log-btn" onclick="logMH('${esc(tm)}')">Log Use</button>`:'<div class="log-done">✓ Done today!</div>'}`
+    :`<div style="font-size:24px">😴</div><div style="font-size:13px;font-weight:700;margin-top:4px">Not today</div><div class="mask-sub">Wed & Sun only</div>`;
+  updateW();
+  document.getElementById('h-stats').innerHTML=[
+    {e:'🧴',v:D.products.length,l:'Products'},{e:'📓',v:D.journal.length,l:'Journal'},
+    {e:'🎭',v:D.mlogs.length,l:'Masks Used'},{e:'🔥',v:sk,l:'Streak'},
+  ].map(s=>`<div class="stat-item"><div class="stat-emoji">${s.e}</div><div class="stat-val">${s.v}</div><div class="stat-lbl">${s.l}</div></div>`).join('');
+}
+
+function togHStep(id){
+  const t=today(),idx=D.logs.findIndex(l=>l.date===t);
+  if(idx>=0){const c=D.logs[idx].done;D.logs[idx].done=c.includes(id)?c.filter(x=>x!==id):[...c,id];}
+  else D.logs.push({date:t,done:[id]});
+  checkDone();save();rHome();
+}
+
+function logMH(n){D.mlogs.push({date:today(),n});const s=D.mstock.find(x=>x.n===n);if(s)s.u++;save();rHome();}
+
+function adjWater(d){
+  const t=today(),c=getW(),v=Math.max(0,Math.min(8,c+d));
+  const i=D.wlogs.findIndex(l=>l.date===t);
+  if(i>=0)D.wlogs[i].g=v;else D.wlogs.push({date:t,g:v});
+  save();updateW();
+}
+function updateW(){
+  const g=getW(),circ=2*Math.PI*28,dash=(g/8)*circ;
+  document.getElementById('w-ring').setAttribute('stroke-dasharray',`${dash} ${circ}`);
+  document.getElementById('w-num').textContent=`${g}/8`;
+}
+
+// ── ROUTINE ───────────────────────────────
+function setTOD(t){
+  tod=t;
+  document.getElementById('btn-am').className='time-btn '+(t==='AM'?'am-on':'');
+  document.getElementById('btn-pm').className='time-btn '+(t==='PM'?'pm-on':'');
+  rRoutine();
+}
+function rRoutine(){
+  const steps=D.steps.filter(s=>s.t===tod).sort((a,b)=>a.o-b.o);
+  const done=getC();
+  document.getElementById('r-streak').textContent=streak();
+  document.getElementById('r-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  const allDone=steps.length>0&&steps.every(s=>done.includes(s.id));
+  document.getElementById('r-list').innerHTML=steps.map((s,i)=>{
+    const d=done.includes(s.id);
+    return `<div class="r-step ${d?'done':''}" onclick="togRStep('${s.id}')" oncontextmenu="delStep(event,'${s.id}')">
+      <div class="step-num ${d?'done':''}">${d?'':i+1}</div>
+      <span class="step-txt ${d?'done':''}">${s.name}</span>
+      <span class="time-tag ${tod==='AM'?'tag-am':'tag-pm'}">${tod}</span>
+    </div>`;
+  }).join('');
+  const cel=document.getElementById('r-cel');
+  if(allDone){cel.style.display='block';cel.innerHTML=`<div class="celebration"><div class="cel-emoji">🎉</div><div class="cel-text">${tod==='AM'?'Morning routine complete!':'Evening routine complete!'}</div></div>`;}
+  else cel.style.display='none';
+}
+function togRStep(id){
+  const t=today(),idx=D.logs.findIndex(l=>l.date===t);
+  if(idx>=0){const c=D.logs[idx].done;D.logs[idx].done=c.includes(id)?c.filter(x=>x!==id):[...c,id];}
+  else D.logs.push({date:t,done:[id]});
+  checkDone();save();rRoutine();
+}
+function delStep(e,id){e.preventDefault();if(confirm('Remove this step?')){D.steps=D.steps.filter(s=>s.id!==id);save();rRoutine();}}
+function openAddStep(){document.getElementById('step-inp').value='';document.getElementById('mod-step-ttl').textContent=`Add ${tod} Step`;openM('mod-step');setTimeout(()=>document.getElementById('step-inp').focus(),300);}
+function saveStep(){
+  const n=document.getElementById('step-inp').value.trim();if(!n)return;
+  const mo=Math.max(0,...D.steps.filter(s=>s.t===tod).map(s=>s.o));
+  D.steps.push({id:uid(),name:n,t:tod,o:mo+1});save();closeM('mod-step');rRoutine();
+}
+
+// ── PRODUCTS ──────────────────────────────
+function rProds(){
+  const q=(document.getElementById('prod-search')?.value||'').toLowerCase();
+  document.getElementById('prod-filters').innerHTML=['All',...CATS].map(c=>
+    `<button class="chip ${selCat===c?'on':''}" onclick="sCat('${c}')">${c}</button>`).join('');
+  const fil=D.products.filter(p=>(!q||(p.name||'').toLowerCase().includes(q)||(p.brand||'').toLowerCase().includes(q))&&(selCat==='All'||p.cat===selCat));
+  const el=document.getElementById('prod-list');
+  if(!fil.length){el.innerHTML=`<div class="empty"><div class="empty-e">🧴</div><div class="empty-t">No products yet</div><div class="empty-s">Tap "+ Add" to start your catalog</div></div>`;return;}
+  el.innerHTML=fil.map(p=>`<div class="product-card" onclick="editP('${p.id}')" oncontextmenu="delP(event,'${p.id}')">
+    <div class="p-dot" style="background:${CC[p.cat]||'#D0D0D0'}"></div>
+    <div class="p-info"><div class="p-name">${p.name}</div><div class="p-brand">${p.brand||'No brand'}</div>${p.notes?`<div class="p-notes">${p.notes}</div>`:''}</div>
+    <span class="cat-tag" style="background:${CC[p.cat]||'#D0D0D0'}">${p.cat}</span>
+  </div>`).join('');
+}
+function sCat(c){selCat=c;rProds();}
+function openAddProd(){editPId=null;document.getElementById('mod-prod-ttl').textContent='Add Product';document.getElementById('ep-id').value='';document.getElementById('p-name').value='';document.getElementById('p-brand').value='';document.getElementById('p-notes').value='';catF='Cleanser';rCatPick();openM('mod-prod');}
+function editP(id){const p=D.products.find(x=>x.id===id);if(!p)return;editPId=id;document.getElementById('mod-prod-ttl').textContent='Edit Product';document.getElementById('ep-id').value=id;document.getElementById('p-name').value=p.name;document.getElementById('p-brand').value=p.brand||'';document.getElementById('p-notes').value=p.notes||'';catF=p.cat;rCatPick();openM('mod-prod');}
+function delP(e,id){e.preventDefault();if(confirm('Delete this product?')){D.products=D.products.filter(p=>p.id!==id);save();rProds();}}
+function rCatPick(){document.getElementById('p-cat-pick').innerHTML=CATS.map(c=>`<button class="chip ${catF===c?'on':''}" onclick="sPC('${c}')">${c}</button>`).join('');}
+function sPC(c){catF=c;rCatPick();}
+function saveProd(){
+  const n=document.getElementById('p-name').value.trim();if(!n)return;
+  const o={name:n,brand:document.getElementById('p-brand').value.trim(),cat:catF,notes:document.getElementById('p-notes').value.trim(),addedAt:today()};
+  if(editPId){const i=D.products.findIndex(p=>p.id===editPId);if(i>=0)D.products[i]={...D.products[i],...o};}
+  else D.products.push({id:uid(),...o});
+  save();closeM('mod-prod');rProds();
+}
+
+// ── MASKS ─────────────────────────────────
+function setMaskTab(t){
+  maskTab=t;
+  document.getElementById('m-tab-s').className='time-btn '+(t==='s'?'am-on':'');
+  document.getElementById('m-tab-k').className='time-btn '+(t==='k'?'am-on':'');
+  document.getElementById('m-sched').style.display=t==='s'?'block':'none';
+  document.getElementById('m-stock').style.display=t==='k'?'block':'none';
+}
+function rMasks(){
+  const wk=getMW();
+  document.getElementById('wk-badge').textContent=`Week ${wk}/12`;
+  const tm=getTM(),ml=D.mlogs.some(l=>l.date===today()),day=new Date().getDay();
+  document.getElementById('mask-banner').innerHTML=tm
+    ?`<div class="card" style="background:${MC[tm]||'#FFF0E8'};margin-bottom:12px"><div class="card-label">TODAY'S MASK (${day===3?'Wednesday':'Sunday'})</div><div style="font-size:18px;font-weight:700;margin:6px 0">${tm}</div>${!ml?`<button class="log-btn" onclick="logM('${esc(tm)}')">✓ Mark as Used</button>`:'<div class="log-done">✓ Done today!</div>'}</div>`
+    :`<div class="card" style="text-align:center;margin-bottom:12px"><div style="font-size:28px">😴</div><div style="font-weight:700;margin-top:4px">No mask today</div><div style="font-size:12px;color:var(--text2);margin-top:3px">Mask days are Wednesday & Sunday</div></div>`;
+
+  document.getElementById('m-sched').innerHTML=`
+    <div class="sched-header"><div style="width:40px;margin-right:10px">Wk</div><div style="flex:1;margin-right:6px">Wednesday</div><div style="flex:1">Sunday</div></div>
+    ${SCHED.map(s=>`<div class="sched-row ${s.w===wk?'cur':''} ${s.w<wk?'past':''}">
+      <div class="wk-circle ${s.w===wk?'cur':''} ${s.w<wk?'past':''}">${s.w<wk?'✓':s.w}</div>
+      <div class="m-chip" style="background:${MC[s.wed]||'#eee'}">${s.wed}</div>
+      <div class="m-chip" style="background:${MC[s.sun]||'#eee'}">${s.sun}</div>
+    </div>`).join('')}
+    ${D.mlogs.length?`<div class="section-title" style="margin-top:14px">Recent Logs</div>
+    ${[...D.mlogs].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,6).map(l=>`
+      <div style="display:flex;align-items:center;background:var(--surface);border-radius:10px;padding:11px;margin-bottom:7px;box-shadow:var(--shadow-sm)">
+        <div style="width:10px;height:10px;border-radius:50%;background:${MC[l.n]||'#E8909A'};margin-right:10px"></div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600">${l.n}</div><div style="font-size:11px;color:var(--text2)">${fmt(l.date)}</div></div>
+        <span style="color:var(--mint);font-size:14px">✓</span>
+      </div>`).join('')}`:''}`;
+
+  document.getElementById('m-stock').innerHTML=`<div style="font-size:12px;color:var(--text2);text-align:center;margin-bottom:12px">Tap a mask to log one use</div>
+    ${D.mstock.map(item=>{
+      const rem=item.s-item.u,pct=rem/item.s;
+      const bc=pct>.5?'var(--mint)':pct>.25?'var(--gold)':'var(--danger)';
+      const tc=pct>.5?'#4A8A65':pct>.25?'#A07000':'#C04050';
+      return `<div class="stock-card" onclick="manualM('${esc(item.n)}',${rem})">
+        <div class="stock-top"><div class="s-dot" style="background:${MC[item.n]||'#eee'}"></div><div class="s-name">${item.n}</div><div class="s-rem" style="color:${tc}">${rem} left</div></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.max(0,pct)*100}%;background:${bc}"></div></div>
+        <div class="stock-meta"><span>Started: ${item.s}</span><span>Used: ${item.u}</span><span>Left: ${rem}</span></div>
+      </div>`;
+    }).join('')}`;
+}
+function logM(n){D.mlogs.push({date:today(),n});const s=D.mstock.find(x=>x.n===n);if(s)s.u++;save();rMasks();}
+function manualM(n,rem){if(rem<=0){alert('Out of stock!');return;}if(confirm(`Log one use of ${n}?`)){D.mlogs.push({date:today(),n});const s=D.mstock.find(x=>x.n===n);if(s)s.u++;save();rMasks();}}
+
+// ── JOURNAL ───────────────────────────────
+function rJ(){
+  const sorted=[...D.journal].sort((a,b)=>b.date.localeCompare(a.date));
+  const el=document.getElementById('j-list');
+  if(!sorted.length){el.innerHTML=`<div class="empty"><div class="empty-e">📓</div><div class="empty-t">No entries yet</div><div class="empty-s">Track how your skin feels day to day</div></div>`;return;}
+  el.innerHTML=sorted.map(e=>{
+    const m=MOODS.find(x=>x.k===e.mood)??MOODS[1];
+    return `<div class="j-card" onclick="editJ('${e.id}')" oncontextmenu="delJ(event,'${e.id}')">
+      <div class="j-top"><div class="mood-badge" style="background:${m.c}22;color:${m.c}">${m.e} ${m.l}</div><div class="j-date">${fmt(e.date)}</div></div>
+      ${e.notes?`<div class="j-notes">${e.notes}</div>`:''}
+      ${e.cons?.length?`<div class="tag-row">${e.cons.map(c=>`<span class="c-tag">${c}</span>`).join('')}</div>`:''}
+    </div>`;
+  }).join('');
+}
+function openAddJ(){editJId=null;jMood='good';jCons=[];document.getElementById('mod-j-ttl').textContent='New Entry';document.getElementById('ej-id').value='';document.getElementById('j-notes').value='';rJMood();rJCons();openM('mod-j');}
+function editJ(id){const e=D.journal.find(x=>x.id===id);if(!e)return;editJId=id;jMood=e.mood;jCons=[...(e.cons||[])];document.getElementById('mod-j-ttl').textContent='Edit Entry';document.getElementById('ej-id').value=id;document.getElementById('j-notes').value=e.notes||'';rJMood();rJCons();openM('mod-j');}
+function delJ(e,id){e.preventDefault();if(confirm('Delete this entry?')){D.journal=D.journal.filter(x=>x.id!==id);save();rJ();}}
+function rJMood(){document.getElementById('j-mood-pick').innerHTML=MOODS.map(m=>`<button class="mood-opt ${jMood===m.k?'on':''}" onclick="sMood('${m.k}')"><span class="mood-opt-e">${m.e}</span><span class="mood-opt-l">${m.l}</span></button>`).join('');}
+function sMood(k){jMood=k;rJMood();}
+function rJCons(){document.getElementById('j-concern-pick').innerHTML=CONCERNS.map(c=>`<button class="c-chip ${jCons.includes(c)?'on':''}" onclick="togC('${c}')">${c}</button>`).join('');}
+function togC(c){jCons=jCons.includes(c)?jCons.filter(x=>x!==c):[...jCons,c];rJCons();}
+function saveJ(){
+  const notes=document.getElementById('j-notes').value.trim();
+  if(!notes&&!jCons.length)return;
+  const o={mood:jMood,cons:jCons,notes,date:today()};
+  if(editJId){const i=D.journal.findIndex(e=>e.id===editJId);if(i>=0)D.journal[i]={...D.journal[i],...o};}
+  else D.journal.push({id:uid(),...o});
+  save();closeM('mod-j');rJ();
+}
+
+// ── SETTINGS ──────────────────────────────
+function rSettings(){
+  const sk=streak();
+  document.getElementById('s-stats').innerHTML=[
+    {e:'🔥',v:sk,l:'Streak'},{e:'📅',v:D.logs.length,l:'Days Logged'},
+    {e:'✨',v:D.steps.length,l:'Steps'},{e:'🧴',v:D.products.length,l:'Products'},
+    {e:'📓',v:D.journal.length,l:'Journal'},{e:'🎭',v:D.mlogs.length,l:'Masks Used'},
+  ].map(s=>`<div class="s-stat"><div class="stat-emoji">${s.e}</div><div class="stat-val">${s.v}</div><div class="stat-lbl">${s.l}</div></div>`).join('');
+  const r=D.rem;
+  document.getElementById('tog-am').className='toggle '+(r.amOn?'on':'');
+  document.getElementById('tog-pm').className='toggle '+(r.pmOn?'on':'');
+  document.getElementById('am-chips').innerHTML=AM_T.map(t=>`<button class="chip ${r.amT===t?'on':''}" onclick="sRT('am','${t}')">${t}</button>`).join('');
+  document.getElementById('pm-chips').innerHTML=PM_T.map(t=>`<button class="chip ${r.pmT===t?'on':''}" onclick="sRT('pm','${t}')">${t}</button>`).join('');
+}
+function togRem(w){D.rem[w+'On']=!D.rem[w+'On'];save();rSettings();}
+function sRT(w,t){D.rem[w+'T']=t;save();rSettings();}
+
+// ── MODALS ────────────────────────────────
+function openM(id){document.getElementById(id).classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this)closeM(this.id);}));
+document.getElementById('step-inp').addEventListener('keydown',e=>{if(e.key==='Enter')saveStep();});
+
+// ── INIT ──────────────────────────────────
+load();rHome();
+</script>
 </body>
 </html>
